@@ -77,7 +77,7 @@ public class Game {
         if(objectOnFiedl.isEmpty()) return true;
 
         for(int i=0;i<objectOnFiedl.size();i++){
-            if(objectOnFiedl.get(i).getX() == x && objectOnFiedl.get(i).getY() == y){
+            if(objectOnFiedl.get(i).getRow() == x && objectOnFiedl.get(i).getCol() == y){
                 return false;
             }
         }

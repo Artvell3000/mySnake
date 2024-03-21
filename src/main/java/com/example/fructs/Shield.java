@@ -4,12 +4,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.Resoueces;
 import com.example.effects.*;
 
 public class Shield extends Fruct{
 
-    public Shield(int x, int y) throws FileNotFoundException {
-        super(Resoueces.pathToImgShield,x,y);
+    public Shield(int r, int c) throws FileNotFoundException {
+        super(r,c);
+        setPathForImage(Resoueces.pathToImgShield);
     }
 
     @Override

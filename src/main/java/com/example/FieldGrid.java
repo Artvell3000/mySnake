@@ -26,6 +26,10 @@ public class FieldGrid extends GridPane{
         }
     }
 
+    FieldGrid(int h, int w){
+        this(h,w,Resoueces.styleCell1, Resoueces.styleCell2);
+    }
+
     public boolean isFreeCell(int r, int c){
         return fieldPanes[r][c].isEmpty();
     }

@@ -4,12 +4,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.Resoueces;
 import com.example.effects.*;
 
 public class Apple extends Fruct{
 
-    public Apple(int x, int y) throws FileNotFoundException {
-        super(Resoueces.pathToImgApple,x,y);
+    public Apple(int r, int c) throws FileNotFoundException {
+        super(r,c);
+        setPathForImage(Resoueces.pathToImgApple);
     }
 
     @Override

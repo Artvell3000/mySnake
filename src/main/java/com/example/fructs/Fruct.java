@@ -7,24 +7,33 @@ import java.util.ArrayList;
 import com.example.effects.Effect;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public abstract class Fruct{
-    public final int x;
-    public final int y;
-    public final Image image;
+    public final int r;
+    public final int c;
+    public static String path = "";
+
+    public static void setPathForImage(String s){
+        path = s;
+    }
     
-    public int getX(){
-        return x;
+    public int getRow(){
+        return r;
     }
 
-    public int getY(){
-        return y;
+    public int getCol(){
+        return c;
     }
 
-    protected Fruct(String path, int y, int x) throws FileNotFoundException{
-        this.x = x;
-        this.y = y;
-        image = new Image(new FileInputStream(path));
+    protected Fruct(int r, int c) throws FileNotFoundException{
+        this.r = r;
+        this.c = c;
+    }
+
+    public ImageView getImage() throws FileNotFoundException{
+        Image image = new Image(new FileInputStream(path));
+        return new ImageView(image);
     }
 
     public abstract ArrayList<Effect> getEffect();

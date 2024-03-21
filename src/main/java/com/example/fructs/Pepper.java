@@ -4,12 +4,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.Resoueces;
 import com.example.effects.*;;
 
 public class Pepper extends Fruct{
 
-    public Pepper(int x, int y) throws FileNotFoundException {
-        super(Resoueces.pathToImgPepper,x,y);
+    public Pepper(int r, int c) throws FileNotFoundException {
+        super(r,c);
+        setPathForImage(Resoueces.pathToImgPepper);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.example;
 
+import java.io.FileNotFoundException;
+
 import com.example.fructs.Fruct;
 
 import javafx.scene.image.ImageView;
@@ -17,10 +19,10 @@ public class FieldPane extends Pane{
         this.getChildren().removeAll();
     }
 
-    public void updateGameObject(Fruct f){
+    public void updateGameObject(Fruct f) throws FileNotFoundException{
         this.fruct = f;
         this.getChildren().removeAll();
-        this.getChildren().add(new ImageView(f.image));
+        this.getChildren().add(f.getImage());
     }
 
     FieldPane(String style){
