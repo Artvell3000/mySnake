@@ -11,6 +11,7 @@ public class Bomb extends Fruct{
 
     public Bomb(int r, int c) throws FileNotFoundException {
         super(r,c);
+        symbol = "b";
         setPathForImage(Resoueces.pathToImgBomb);
     }
 

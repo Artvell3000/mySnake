@@ -11,5 +11,10 @@ public class GoldAppleFactory extends FructFactory{
     public Fruct getFruct(int x, int y) throws FileNotFoundException {
         return new GoldApple(x,y);
     }
+
+    @Override
+    public int getCountOfFructs() {
+        return 1;
+    }
     
 }

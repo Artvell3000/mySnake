@@ -11,5 +11,10 @@ public class PepperFactory extends FructFactory{
     public Fruct getFruct(int x, int y) throws FileNotFoundException {
         return new Pepper(x,y);
     }
+
+    @Override
+    public int getCountOfFructs() {
+        return 5;
+    }
     
 }

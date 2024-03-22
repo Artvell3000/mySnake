@@ -11,5 +11,10 @@ public class BombFactory extends FructFactory{
     public Fruct getFruct(int x, int y) throws FileNotFoundException {
         return new Bomb(x,y);
     }
+
+    @Override
+    public int getCountOfFructs() {
+        return 5;
+    }
     
 }

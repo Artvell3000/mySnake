@@ -11,6 +11,7 @@ public class Apple extends Fruct{
 
     public Apple(int r, int c) throws FileNotFoundException {
         super(r,c);
+        symbol = "a";
         setPathForImage(Resoueces.pathToImgApple);
     }
 

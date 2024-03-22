@@ -13,6 +13,7 @@ public class GoldApple extends Fruct{
 
     public GoldApple(int r, int c) throws FileNotFoundException {
         super(r, c);
+        symbol = "g";
         setPathForImage(Resoueces.pathToImgGoldApple);
     }
 

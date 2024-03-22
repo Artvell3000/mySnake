@@ -11,6 +11,7 @@ public class Pepper extends Fruct{
 
     public Pepper(int r, int c) throws FileNotFoundException {
         super(r,c);
+        symbol = "p";
         setPathForImage(Resoueces.pathToImgPepper);
     }
 

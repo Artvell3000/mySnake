@@ -11,5 +11,10 @@ public class ShieldFactory extends FructFactory{
     public Fruct getFruct(int x, int y) throws FileNotFoundException {
         return new Shield(x, y);
     }
+
+    @Override
+    public int getCountOfFructs() {
+        return 1;
+    }
     
 }

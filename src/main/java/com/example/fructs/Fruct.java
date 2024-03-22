@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import com.example.effects.Effect;
+import com.example.model.Coordinates;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,9 +13,19 @@ import javafx.scene.image.ImageView;
 public abstract class Fruct{
     public final int r;
     public final int c;
-    public static String path = "";
+    public String path = "";
+    public String symbol = "";
 
-    public static void setPathForImage(String s){
+    public Coordinates getCoordinates(){
+        return new Coordinates(r,c);
+    }
+
+    @Override
+    public String toString(){
+        return symbol;
+    }
+
+    public void setPathForImage(String s){
         path = s;
     }
     

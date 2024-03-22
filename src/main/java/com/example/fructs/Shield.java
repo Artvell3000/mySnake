@@ -11,6 +11,7 @@ public class Shield extends Fruct{
 
     public Shield(int r, int c) throws FileNotFoundException {
         super(r,c);
+        symbol = "s";
         setPathForImage(Resoueces.pathToImgShield);
     }
 
