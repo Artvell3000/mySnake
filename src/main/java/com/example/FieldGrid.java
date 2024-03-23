@@ -49,7 +49,7 @@ public class FieldGrid extends GridPane{
     public void redraw(ModelInfo info) throws FileNotFoundException{
         for(int r=0;r < height; r++){
             for(int c=0;c<width; c++){
-                fieldPanes[r][c].getChildren().removeAll();
+                if(!fieldPanes[r][c].getChildren().isEmpty())fieldPanes[r][c].getChildren().remove(0);
             }
         }
 
@@ -58,7 +58,9 @@ public class FieldGrid extends GridPane{
             fieldPanes[i.getRow()][i.getCol()].getChildren().add(i.getImageView());
         }
 
+        System.out.println("snake: ");
         for(Coordinates i:info.snake){
+            System.out.println(i.toString());
             fieldPanes[i.r][i.c].getChildren().add(
                 new SnakePane(info.isProtected)
             );

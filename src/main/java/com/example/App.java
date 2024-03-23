@@ -5,28 +5,20 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Random;
 
-import com.example.effects.Effect;
-import com.example.fructs.*;
 import com.example.model.Model;
 import com.example.model.DrivingDirections.Direction;
 
 public class App extends Application {
-    final int height = 21, width = 21;
-    final double delay = 160;
+    final int height = 41, width = 21;
+    final double delay = 320;
     Model model = null;
 
     Timeline timeline = new Timeline();
@@ -34,7 +26,7 @@ public class App extends Application {
     private static Scene scene;
 
     @Override
-    public void start(Stage stage) throws FileNotFoundException{
+    public void start(@SuppressWarnings("exports") Stage stage) throws FileNotFoundException{
 
         model = new Model(height, width);
         
@@ -61,7 +53,14 @@ public class App extends Application {
 
         timeline.getKeyFrames().add(
             new KeyFrame(Duration.millis(delay), e -> {
-                
+                model.updateSnake();
+                try {
+                    grid.redraw(model.getInfo());
+                } catch (FileNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                System.out.println("updateSnake");
             })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -71,16 +70,16 @@ public class App extends Application {
             KeyCode keyCode = event.getCode();
 
             switch (keyCode.getChar()) {
-                case "W":
+                case "A":
                     model.setDirection(Direction.UP);
                     break;
-                case "S":
+                case "D":
                     model.setDirection(Direction.DOWN);
                     break;
-                case "D":
+                case "S":
                     model.setDirection(Direction.RIGHT);
                     break;
-                case "A":
+                case "W":
                     model.setDirection(Direction.LEFT);
                     break;
                 case "O":

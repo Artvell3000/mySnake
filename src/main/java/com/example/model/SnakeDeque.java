@@ -22,15 +22,19 @@ public class SnakeDeque extends ArrayDeque<Coordinates>{
         switch (direction) {
             case UP:
                 head.r--;
+                if(head.r==-1) head.r = height-1;
                 break;
             case DOWN:
                 head.r++;
+                if(head.r==height) head.r = 0;
                 break;
             case LEFT:
                 head.c--;
+                if(head.c==-1) head.c = width-1;
                 break;
             case RIGHT:
                 head.c++;
+                if(head.c==width) head.c = 0;
                 break;
         }
         this.addFirst(head);
