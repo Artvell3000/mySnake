@@ -17,4 +17,9 @@ public class Coordinates {
     public Coordinates copy(){
         return new Coordinates(r, c);
     }
+
+    @Override
+    public String toString(){
+        return "( " + r + " , " + c + " )";
+    }
 }

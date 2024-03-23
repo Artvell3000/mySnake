@@ -11,13 +11,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Fruct{
-    public final int r;
-    public final int c;
+    public Coordinates coordinate;
     public String path = "";
     public String symbol = "";
 
     public Coordinates getCoordinates(){
-        return new Coordinates(r,c);
+        return coordinate;
     }
 
     @Override
@@ -30,21 +29,23 @@ public abstract class Fruct{
     }
     
     public int getRow(){
-        return r;
+        return coordinate.r;
     }
 
     public int getCol(){
-        return c;
+        return coordinate.c;
     }
 
     protected Fruct(int r, int c) throws FileNotFoundException{
-        this.r = r;
-        this.c = c;
+        coordinate = new Coordinates(r, c);
     }
 
-    public ImageView getImage() throws FileNotFoundException{
+    public ImageView getImageView() throws FileNotFoundException{
         Image image = new Image(new FileInputStream(path));
-        return new ImageView(image);
+        ImageView view = new ImageView(image);
+        view.setFitHeight(40);
+        view.setFitWidth(40);
+        return view;
     }
 
     public abstract ArrayList<Effect> getEffect();

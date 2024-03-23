@@ -1,13 +1,14 @@
 package com.example.model;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 import com.example.model.DrivingDirections.Direction;
 
 public class SnakeDeque extends ArrayDeque<Coordinates>{
     int height, width;
     Coordinates deadTail;
-    Direction directions = DrivingDirections.Direction.UP;
+    Direction direction = DrivingDirections.Direction.UP;
 
     SnakeDeque(int h, int w){
         height = h;
@@ -18,7 +19,7 @@ public class SnakeDeque extends ArrayDeque<Coordinates>{
 
     public SnakeUpdate update(){
         Coordinates head = this.getFirst().copy();
-        switch (directions) {
+        switch (direction) {
             case UP:
                 head.r--;
                 break;
@@ -42,6 +43,15 @@ public class SnakeDeque extends ArrayDeque<Coordinates>{
     public Coordinates increaseSnake(){
         this.addLast(deadTail);
         return deadTail;
+    }
+
+    public void setDirection(Direction d) {
+        direction = d;
+    }
+
+    public ArrayList<Coordinates> toArrayList() {
+        ArrayList<Coordinates> tempSnake = new ArrayList<>(this);
+        return tempSnake;
     }
 
 

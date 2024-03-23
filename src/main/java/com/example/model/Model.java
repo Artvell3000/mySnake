@@ -1,10 +1,8 @@
 package com.example.model;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.Random;
 
 import com.example.FructFactory.AppleFactory;
@@ -13,14 +11,19 @@ import com.example.FructFactory.FructFactory;
 import com.example.FructFactory.GoldAppleFactory;
 import com.example.FructFactory.PepperFactory;
 import com.example.FructFactory.ShieldFactory;
+import com.example.effects.Effect;
+import com.example.effects.GameOverEffect;
 import com.example.fructs.Fruct;
+import com.example.model.DrivingDirections.Direction;
 
 public class Model {
     final int height;
     final int width;
     Boolean[][] field;
 
-    private ArrayDeque<Coordinates> snake = new ArrayDeque<>();
+    private SnakeDeque snake;
+
+    ArrayList<Effect> effects = new ArrayList<>();
 
     private ArrayList<Coordinates> freeCells = new ArrayList<>();
     private ArrayList<Fruct> fructs = new ArrayList<>();
@@ -47,7 +50,7 @@ public class Model {
 
         while(!fructs.isEmpty()){
             Fruct i = fructs.get(0);
-            field[i.r][i.c] = null;
+            field[i.getRow()][i.getCol()] = null;
             freeCells.add(i.getCoordinates());
             deadFructs.add(i);
             fructs.remove(0);
@@ -69,12 +72,35 @@ public class Model {
     }
 
     public void updateSnake(){
+        SnakeUpdate update = snake.update();
+        freeCells.add(update.deadTail);
+        field[update.deadTail.r][update.deadTail.c] = null;
 
+        //System.out.println("deadTail : " + update.deadTail.toString());
+        
+        Boolean fieldState = field[update.newHead.r][update.newHead.c];
+        field[update.newHead.r][update.newHead.c] = false;
+        
+
+        if(fieldState == null) return;
+
+        if(fieldState){
+            for(Fruct i:fructs){
+                if(update.newHead.equals(i.getCoordinates())){
+                    effects.addAll(i.getEffect());
+                }
+            }
+        }else{
+            effects.add(new GameOverEffect());
+        }
+
+        ;
     }
 
-    Model(int h, int w) throws FileNotFoundException{
+    public Model(int h, int w) throws FileNotFoundException{
         height = h;
         width = w;
+        snake = new SnakeDeque(h, w);
         field = new Boolean[h][w];
         for(int r=0;r<height;r++){
             for(int c=0;c<width;c++){
@@ -83,24 +109,44 @@ public class Model {
             }
         }
 
-        Coordinates head = new Coordinates(h/2, w/2);
-        snake.add(head);
-        field[head.r][head.c] = false;
-        freeCells.remove(head);
+        snake = new SnakeDeque(h, w);
+        field[snake.getFirst().r][snake.getFirst().c] = false;
+        freeCells.remove(snake.getFirst());
 
         generateFructs();
     }
 
-    public void getNextState(){
+    
 
+    //get && set
+
+    public ModelUpdate getNextState(){
+
+        var snakeUpdate = snake.update();
+
+        return new ModelUpdate(snakeUpdate, newFructs, deadFructs);
     }
 
-    public Coordinates getStartSnake(){
-        return snake.getFirst();
+    public ModelInfo getInfo(){
+        printField();
+        return new ModelInfo(fructs, snake.toArrayList(), false);
     }
 
-    public void printField(){
+    public void setDirection(Direction d){
+        snake.setDirection(d);
+    }
+
+    //print
+
+    private void printField(){
         for(int r=0;r<height;r++){
+
+            String iter = String.valueOf(r);
+            while(iter.length()!=3){
+                iter+=" ";
+            }
+
+            System.out.print(iter);
 
             for(int c=0;c<width;c++){
                 if(field[r][c] == null){
@@ -113,7 +159,7 @@ public class Model {
                 }
 
                 for(Fruct f:fructs){
-                    if(f.r == r && f.c == c){
+                    if(f.getRow() == r && f.getCol() == c){
                         System.out.print(f.toString() + " ");
                         break;
                     }
@@ -123,12 +169,25 @@ public class Model {
         }
     }
 
+    private void printSnake(){
+        for(Coordinates i:snake){
+            System.out.println(i.toString());
+        }
+    }
+
     public static void main(String[] arg) throws FileNotFoundException{
         Model m = new Model(23, 23);
-        m.printField();
-        m.generateFructs();
-        System.out.println();
-        m.printField();
+        
+        for(int i=0;i<7;i++){
+
+            System.out.println("iter " + i + " ------------------------------------------------------------------");
+            m.printField();
+            System.out.println();
+            if(i == 3)m.snake.increaseSnake();
+            m.printSnake();
+            System.out.println();
+            m.updateSnake();
+        }
     }
     
 }

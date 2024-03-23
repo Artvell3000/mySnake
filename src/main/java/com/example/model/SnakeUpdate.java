@@ -4,7 +4,7 @@ public class SnakeUpdate {
     public final Coordinates newHead;
     public final Coordinates deadTail;
 
-    SnakeUpdate(Coordinates deadTail, Coordinates newHead){
+    SnakeUpdate(Coordinates newHead, Coordinates deadTail){
         this.newHead = newHead;
         this.deadTail = deadTail;
     }
