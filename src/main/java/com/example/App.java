@@ -57,7 +57,6 @@ public class App extends Application {
                 try {
                     grid.redraw(model.getInfo());
                 } catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 System.out.println("updateSnake");
