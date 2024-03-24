@@ -12,12 +12,12 @@ import javafx.scene.layout.Pane;
 
 public class SnakeCell extends Fruct{
     private boolean isProtected = false;
-    private boolean isHead = false;
+    //private boolean isHead = false;
 
-    protected SnakeCell(int r, int c, boolean isProtected, boolean isHead) throws FileNotFoundException {
+    protected SnakeCell(int r, int c, boolean isProtected /*, boolean isHead*/) throws FileNotFoundException {
         super(r, c);
         symbol = "O";
-        this.isHead = isHead;
+        //this.isHead = isHead;
         this.isProtected = isProtected;
         //setPathForImage(Resoueces.sty);
         

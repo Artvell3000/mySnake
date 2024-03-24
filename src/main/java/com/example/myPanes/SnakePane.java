@@ -1,4 +1,6 @@
-package com.example;
+package com.example.myPanes;
+
+import com.example.Resoueces;
 
 import javafx.scene.layout.Pane;
 

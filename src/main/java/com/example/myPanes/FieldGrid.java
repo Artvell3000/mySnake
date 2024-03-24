@@ -1,7 +1,8 @@
-package com.example;
+package com.example.myPanes;
 
 import java.io.FileNotFoundException;
 
+import com.example.Resoueces;
 import com.example.fructs.Fruct;
 import com.example.model.Coordinates;
 import com.example.model.ModelInfo;
@@ -38,7 +39,7 @@ public class FieldGrid extends GridPane{
         }
     }
 
-    FieldGrid(int h, int w){
+    public FieldGrid(int h, int w){
         this(h,w,Resoueces.styleCell1, Resoueces.styleCell2);
     }
 
