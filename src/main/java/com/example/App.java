@@ -25,6 +25,12 @@ public class App extends Application {
     
     private static Scene scene;
 
+    private Label getLabelForScore(){
+        Label scoreLabel = new Label("0");
+        scoreLabel.setStyle(Resources.styleScore);
+        return scoreLabel;
+    }
+
     @Override
     public void start(@SuppressWarnings("exports") Stage stage) throws FileNotFoundException{
 
@@ -32,12 +38,8 @@ public class App extends Application {
         
         FieldGrid grid = new FieldGrid(height, width);
 
-        Label scoreLabel = new Label("0");
-        scoreLabel.setStyle(Resources.styleScore);
-        
-
         VBox vbox = new VBox();
-        vbox.getChildren().add(scoreLabel);
+        vbox.getChildren().add(getLabelForScore());
         vbox.getChildren().add(grid);
 
         StackPane root = new StackPane();
