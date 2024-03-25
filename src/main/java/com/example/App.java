@@ -33,7 +33,7 @@ public class App extends Application {
     }
 
     private Label getLabelForGameOver(){
-        Label gameOverLabel = new Label("GAME OVER");
+        Label gameOverLabel = new Label(Resources.textGameOver);
         gameOverLabel.setStyle(Resources.styleGameOver);
         gameOverLabel.setVisible(false);
         return gameOverLabel;
@@ -97,7 +97,7 @@ public class App extends Application {
             System.out.println("Key Pressed: " + keyCode.getChar());
         });
 
-        stage.setTitle("SNAKE");
+        stage.setTitle(Resources.textTitle);
         stage.setScene(scene);
         stage.show();
     }

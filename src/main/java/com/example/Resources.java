@@ -1,6 +1,8 @@
 package com.example;
 
 public class Resources {
+    static public final String textTitle = "SNAKE";
+    static public final String textGameOver = "GAME OVER";
 
     static public final String styleScore = "-fx-font-size:20";
     static public final String styleGameOver = "-fx-font-size:50";
