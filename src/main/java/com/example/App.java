@@ -20,6 +20,7 @@ import com.example.myPanes.FieldGrid;
 public class App extends Application {
     final int height = 41, width = 21;
     final double delay = 320;
+    boolean isPaused = false;
     Model model = null;
     Timeline timeline = new Timeline();
     
@@ -29,6 +30,13 @@ public class App extends Application {
         Label scoreLabel = new Label("0");
         scoreLabel.setStyle(Resources.styleScore);
         return scoreLabel;
+    }
+
+    private Label getLabelForGameOver(){
+        Label gameOverLabel = new Label("GAME OVER");
+        gameOverLabel.setStyle(Resources.styleGameOver);
+        gameOverLabel.setVisible(false);
+        return gameOverLabel;
     }
 
     @Override
@@ -44,11 +52,8 @@ public class App extends Application {
 
         StackPane root = new StackPane();
         
-        Label l = new Label("GAME OVER");
-        l.setStyle(Resources.styleGameOver);
-        l.setVisible(false);
         root.getChildren().add(vbox);
-        root.getChildren().add(l);
+        root.getChildren().add(getLabelForGameOver());
         
         scene = new Scene(root);
         grid.redraw(model.getInfo());
@@ -84,7 +89,9 @@ public class App extends Application {
                     model.setDirection(Direction.LEFT);
                     break;
                 case "O":
-                    timeline.stop();
+                    if(isPaused)timeline.stop();
+                    else timeline.play();
+                    isPaused = !isPaused;
                     break;
             }
             System.out.println("Key Pressed: " + keyCode.getChar());
