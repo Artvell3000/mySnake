@@ -60,7 +60,12 @@ public class App extends Application {
 
         timeline.getKeyFrames().add(
             new KeyFrame(Duration.millis(delay), e -> {
-                model.updateSnake();
+                try {
+                    model.updateSnake();
+                } catch (FileNotFoundException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 try {
                     grid.redraw(model.getInfo());
                 } catch (FileNotFoundException e1) {

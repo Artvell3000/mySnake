@@ -7,6 +7,7 @@ import java.util.Arrays;
 import com.example.Resources;
 import com.example.effects.Effect;
 import com.example.effects.GameOverEffect;
+import com.example.model.Model;
 
 import javafx.scene.layout.Pane;
 
@@ -14,8 +15,8 @@ public class SnakeCell extends Fruct{
     private boolean isProtected = false;
     //private boolean isHead = false;
 
-    protected SnakeCell(int r, int c, boolean isProtected /*, boolean isHead*/) throws FileNotFoundException {
-        super(r, c);
+    protected SnakeCell(int r, int c, boolean isProtected, Model model /*, boolean isHead*/) throws FileNotFoundException {
+        super(r, c, model);
         symbol = "O";
         //this.isHead = isHead;
         this.isProtected = isProtected;
@@ -25,7 +26,7 @@ public class SnakeCell extends Fruct{
 
     @Override
     public ArrayList<Effect> getEffect() {
-        return new ArrayList<Effect>(Arrays.asList(new GameOverEffect()));
+        return new ArrayList<Effect>(Arrays.asList(new GameOverEffect(model)));
     }
 
     @Override

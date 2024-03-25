@@ -19,6 +19,9 @@ import com.example.model.DrivingDirections.Direction;
 public class Model {
     final int height;
     final int width;
+    private int score = 0;
+    private double delay = 150;
+    private boolean isProtected = false;
     Boolean[][] field;
 
     private SnakeDeque snake;
@@ -36,6 +39,50 @@ public class Model {
         new PepperFactory(),
         new ShieldFactory()
     ));
+
+    public void increaseSnake(){
+        snake.increaseSnake();
+    }
+
+    public void increaseSpeed(){
+        delay+=10;
+        //update speed
+    }
+
+    public void checkGameOver(){
+        if(isProtected){
+            isProtected = false;
+        } else {
+            //message to grid 
+        }
+    }
+
+    public void getExitTheField(){
+        //message to grid
+    }
+
+    public void setShield(){
+        isProtected = true;
+        //message to grid
+    }
+
+    public void increaseScore(int i){
+        score+=i;
+    }
+
+    public void reduceScore(int i){
+        score-=i;
+    }
+
+    public void deleteEatenObject(){
+        Fruct deletedFruct = fructs.get(0);
+        for(Fruct f:fructs){
+            if(f.getCoordinates().equals(snake.getFirst())){
+                deletedFruct = f;
+            }
+        }
+        fructs.remove(deletedFruct);
+    }
 
     private Coordinates getRandomFreeCell(){
         if(freeCells.size() == 0) return null;
@@ -64,19 +111,17 @@ public class Model {
                 freeCells.remove(cell);
 
                 field[cell.r][cell.c] = true;
-                Fruct newFruct = f.getFruct(cell.r, cell.c);
+                Fruct newFruct = f.getFruct(cell.r, cell.c, this);
                 fructs.add(newFruct);
                 newFructs.add(newFruct);
             } 
         }
     }
 
-    public void updateSnake(){
+    public void updateSnake() throws FileNotFoundException{
         SnakeUpdate update = snake.update();
         freeCells.add(update.deadTail);
         field[update.deadTail.r][update.deadTail.c] = null;
-
-        //System.out.println("deadTail : " + update.deadTail.toString());
         
         Boolean fieldState = field[update.newHead.r][update.newHead.c];
         field[update.newHead.r][update.newHead.c] = false;
@@ -88,13 +133,18 @@ public class Model {
             for(Fruct i:fructs){
                 if(update.newHead.equals(i.getCoordinates())){
                     effects.addAll(i.getEffect());
+                    break;
                 }
             }
         }else{
-            effects.add(new GameOverEffect());
+            effects.add(new GameOverEffect(this));
         }
 
-        ;
+        while(!effects.isEmpty()){
+            Effect i = effects.get(0);
+            i.comeTrue();
+            effects.remove(0);
+        }
     }
 
     public Model(int h, int w) throws FileNotFoundException{

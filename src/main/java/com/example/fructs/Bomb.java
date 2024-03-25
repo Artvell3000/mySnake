@@ -6,18 +6,22 @@ import java.util.Arrays;
 
 import com.example.Resources;
 import com.example.effects.*;
+import com.example.model.Model;
 
 public class Bomb extends Fruct{
 
-    public Bomb(int r, int c) throws FileNotFoundException {
-        super(r,c);
+    public Bomb(int r, int c, Model model) throws FileNotFoundException {
+        super(r,c, model);
         symbol = "b";
         setPathForImage(Resources.pathToImgBomb);
     }
 
     @Override
     public ArrayList<Effect> getEffect() {
-        return new ArrayList<>(Arrays.asList(new GameOverEffect(), new DeleteEatenObjEffect()));
+        return new ArrayList<>(Arrays.asList(
+            new GameOverEffect(model), 
+            new DeleteEatenObjEffect(model))
+            );
     }
     
     @Override

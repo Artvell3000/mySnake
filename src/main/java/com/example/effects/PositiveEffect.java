@@ -1,7 +1,13 @@
 package com.example.effects;
 
+import com.example.model.Model;
+
 public class PositiveEffect extends Effect{
-    int inc;
+    public PositiveEffect(Model model) {
+        super(model);
+    }
+
+    private int inc;
     public PositiveEffect setInc(int inc){
         this.inc = inc;
         return this;
@@ -9,7 +15,7 @@ public class PositiveEffect extends Effect{
 
     @Override
     public void comeTrue() {
-        //Game.getInstance().increaseScore(inc);
+        model.increaseScore(inc);
     }
 
 }

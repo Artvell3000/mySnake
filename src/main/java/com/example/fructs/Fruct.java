@@ -6,12 +6,15 @@ import java.util.ArrayList;
 
 import com.example.effects.Effect;
 import com.example.model.Coordinates;
+import com.example.model.Model;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public abstract class Fruct{
-    public Coordinates coordinate;
+
+    protected final Model model;
+    private Coordinates coordinate;
     public String path = "";
     public String symbol = "";
 
@@ -36,8 +39,9 @@ public abstract class Fruct{
         return coordinate.c;
     }
 
-    protected Fruct(int r, int c) throws FileNotFoundException{
+    protected Fruct(int r, int c, Model model) throws FileNotFoundException{
         coordinate = new Coordinates(r, c);
+        this.model = model;
     }
 
     public ImageView getImageView() throws FileNotFoundException{

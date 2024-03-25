@@ -8,18 +8,22 @@ import com.example.Resources;
 import com.example.effects.Effect;
 import com.example.effects.PositiveEffect;
 import com.example.effects.RegenerateEffect;
+import com.example.model.Model;
 
 public class GoldApple extends Fruct{
 
-    public GoldApple(int r, int c) throws FileNotFoundException {
-        super(r, c);
+    public GoldApple(int r, int c, Model model) throws FileNotFoundException {
+        super(r, c, model);
         symbol = "g";
         setPathForImage(Resources.pathToImgGoldApple);
     }
 
     @Override
     public ArrayList<Effect> getEffect() {
-        return new ArrayList<>(Arrays.asList((new PositiveEffect()).setInc(100), new RegenerateEffect()));
+        return new ArrayList<>(Arrays.asList((
+            new PositiveEffect(model)).setInc(100), 
+            new RegenerateEffect(model))
+            );
     }
 
     @Override

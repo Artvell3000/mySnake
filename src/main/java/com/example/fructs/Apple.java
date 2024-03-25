@@ -6,18 +6,23 @@ import java.util.Arrays;
 
 import com.example.Resources;
 import com.example.effects.*;
+import com.example.model.Model;
 
 public class Apple extends Fruct{
 
-    public Apple(int r, int c) throws FileNotFoundException {
-        super(r,c);
+    public Apple(int r, int c, Model model) throws FileNotFoundException {
+        super(r,c, model);
         symbol = "a";
         setPathForImage(Resources.pathToImgApple);
     }
 
     @Override
     public ArrayList<Effect> getEffect() {
-        return new ArrayList<>(Arrays.asList((new PositiveEffect()).setInc(10), new EnhancingEffect(), new RegenerateEffect()));
+        return new ArrayList<>(Arrays.asList(
+            (new PositiveEffect(model)).setInc(10), 
+            new EnhancingEffect(model), 
+            new RegenerateEffect(model))
+        );
     }
     
     @Override
