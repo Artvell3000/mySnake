@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.example.Resoueces;
+import com.example.Resources;
 import com.example.effects.*;
 
 public class Bomb extends Fruct{
@@ -12,7 +12,7 @@ public class Bomb extends Fruct{
     public Bomb(int r, int c) throws FileNotFoundException {
         super(r,c);
         symbol = "b";
-        setPathForImage(Resoueces.pathToImgBomb);
+        setPathForImage(Resources.pathToImgBomb);
     }
 
     @Override

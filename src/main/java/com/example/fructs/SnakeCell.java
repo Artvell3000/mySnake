@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.example.Resoueces;
+import com.example.Resources;
 import com.example.effects.Effect;
 import com.example.effects.GameOverEffect;
 
@@ -36,7 +36,7 @@ public class SnakeCell extends Fruct{
     public Pane getSnakePane(){
         Pane pane = new Pane();
         pane.setStyle(
-            (isProtected)?Resoueces.styleProtectedSnake:Resoueces.styleNoProtectedSnake  
+            (isProtected)?Resources.styleProtectedSnake:Resources.styleNoProtectedSnake  
         );
         return pane;
     }

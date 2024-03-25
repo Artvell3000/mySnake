@@ -21,7 +21,6 @@ public class App extends Application {
     final int height = 41, width = 21;
     final double delay = 320;
     Model model = null;
-
     Timeline timeline = new Timeline();
     
     private static Scene scene;
@@ -34,7 +33,7 @@ public class App extends Application {
         FieldGrid grid = new FieldGrid(height, width);
 
         Label scoreLabel = new Label("0");
-        scoreLabel.setStyle("-fx-font-size:20");
+        scoreLabel.setStyle(Resources.styleScore);
         
 
         VBox vbox = new VBox();
@@ -44,7 +43,7 @@ public class App extends Application {
         StackPane root = new StackPane();
         
         Label l = new Label("GAME OVER");
-        l.setStyle("-fx-font-size:50");
+        l.setStyle(Resources.styleGameOver);
         l.setVisible(false);
         root.getChildren().add(vbox);
         root.getChildren().add(l);

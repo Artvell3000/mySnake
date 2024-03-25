@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.example.Resoueces;
+import com.example.Resources;
 import com.example.effects.Effect;
 import com.example.effects.PositiveEffect;
 import com.example.effects.RegenerateEffect;
@@ -14,7 +14,7 @@ public class GoldApple extends Fruct{
     public GoldApple(int r, int c) throws FileNotFoundException {
         super(r, c);
         symbol = "g";
-        setPathForImage(Resoueces.pathToImgGoldApple);
+        setPathForImage(Resources.pathToImgGoldApple);
     }
 
     @Override

@@ -1,6 +1,9 @@
 package com.example;
 
-public class Resoueces {
+public class Resources {
+
+    static public final String styleScore = "-fx-font-size:20";
+    static public final String styleGameOver = "-fx-font-size:50";
 
     static public final String styleProtectedSnake = "-fx-background-color: #ffd700;";
     static public final String styleNoProtectedSnake = "-fx-background-color: green;";

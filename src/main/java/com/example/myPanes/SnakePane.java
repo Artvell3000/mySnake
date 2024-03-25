@@ -1,12 +1,12 @@
 package com.example.myPanes;
 
-import com.example.Resoueces;
+import com.example.Resources;
 
 import javafx.scene.layout.Pane;
 
 public class SnakePane extends Pane{
-    private static String styleProtected = Resoueces.styleProtectedSnake;
-    private static String styleNoProtected = Resoueces.styleNoProtectedSnake;
+    private static String styleProtected = Resources.styleProtectedSnake;
+    private static String styleNoProtected = Resources.styleNoProtectedSnake;
     private boolean isProtected; 
 
     SnakePane(boolean isProtected){

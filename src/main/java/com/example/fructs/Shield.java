@@ -4,7 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.example.Resoueces;
+import com.example.Resources;
 import com.example.effects.*;
 
 public class Shield extends Fruct{
@@ -12,7 +12,7 @@ public class Shield extends Fruct{
     public Shield(int r, int c) throws FileNotFoundException {
         super(r,c);
         symbol = "s";
-        setPathForImage(Resoueces.pathToImgShield);
+        setPathForImage(Resources.pathToImgShield);
     }
 
     @Override
