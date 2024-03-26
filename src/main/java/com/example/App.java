@@ -19,7 +19,7 @@ import com.example.myPanes.FieldGrid;
 
 public class App extends Application {
     final int height = 41, width = 21;
-    final double delay = 320;
+    final double delay = 100;
     boolean isPaused = false;
     Model model = null;
     Timeline timeline = new Timeline();
@@ -44,7 +44,7 @@ public class App extends Application {
 
         model = new Model(height, width);
         
-        FieldGrid grid = new FieldGrid(height, width);
+        FieldGrid grid = new FieldGrid(model);
 
         VBox vbox = new VBox();
         vbox.getChildren().add(getLabelForScore());
@@ -61,17 +61,10 @@ public class App extends Application {
         timeline.getKeyFrames().add(
             new KeyFrame(Duration.millis(delay), e -> {
                 try {
-                    model.updateSnake();
-                } catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-                try {
-                    grid.redraw(model.getInfo());
+                    model.getNextState();
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
-                System.out.println("updateSnake");
             })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -99,7 +92,7 @@ public class App extends Application {
                     isPaused = !isPaused;
                     break;
             }
-            System.out.println("Key Pressed: " + keyCode.getChar());
+            //System.out.println("Key Pressed: " + keyCode.getChar());
         });
 
         stage.setTitle(Resources.textTitle);

@@ -15,7 +15,7 @@ public class AppleFactory extends FructFactory {
 
     @Override
     public int getCountOfFructs() {
-        return 5;
+        return 100;
     }
     
 }

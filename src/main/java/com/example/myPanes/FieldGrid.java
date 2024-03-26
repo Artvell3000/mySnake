@@ -5,25 +5,29 @@ import java.io.FileNotFoundException;
 import com.example.Resources;
 import com.example.fructs.Fruct;
 import com.example.model.Coordinates;
+import com.example.model.Model;
 import com.example.model.ModelInfo;
 import com.example.model.ModelUpdate;
 
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class FieldGrid extends GridPane{
+    private Model model;
     final int height;
     final int width;
     final String style1;
     final String style2;
     Pane[][] fieldPanes;
 
-    FieldGrid(int h, int w, String s1, String s2){
-        this.height = h;
-        this.width = w;
+    FieldGrid(Model model, String s1, String s2){
+        model.registerGridPane(this);
+        this.height = model.height;
+        this.width = model.width;
         this.style1 = s1;
         this.style2 = s2;
-        fieldPanes = new Pane[h][w];
+        fieldPanes = new Pane[height][width];
         this.setGridLinesVisible(true);
 
         for(int r=0;r<height;r++){
@@ -39,12 +43,32 @@ public class FieldGrid extends GridPane{
         }
     }
 
-    public FieldGrid(int h, int w){
-        this(h,w,Resources.styleCell1, Resources.styleCell2);
+    public FieldGrid(Model model){
+        this(model,Resources.styleCell1, Resources.styleCell2);
     }
 
-    public void update(ModelUpdate modelUpdate){
+    public void update(ModelUpdate modelUpdate) throws FileNotFoundException{
+        Coordinates head = modelUpdate.snakeUpdate.newHead;
+        if(!fieldPanes[head.r][head.c].getChildren().isEmpty())fieldPanes[head.r][head.c].getChildren().remove(0);
+        fieldPanes[head.r][head.c].getChildren().add(new SnakePane(false));
 
+        Coordinates dead = modelUpdate.snakeUpdate.deadTail;
+        fieldPanes[dead.r][dead.c].getChildren().removeIf(x -> x instanceof SnakePane);
+
+
+        //System.out.println("DEAD: ");
+        for(Fruct i:modelUpdate.deadFructs){
+            Coordinates cord = i.getCoordinates();
+            fieldPanes[cord.r][cord.c].getChildren().removeIf(x -> x instanceof ImageView);
+            //System.out.println(cord.toString());
+        }
+
+        //System.out.println("NEW: ");
+        for(Fruct i:modelUpdate.newFructs){
+            Coordinates cord = i.getCoordinates();
+            fieldPanes[cord.r][cord.c].getChildren().add(i.getImageView());
+            //System.out.println(cord.toString());
+        }
     }
 
     public void redraw(ModelInfo info) throws FileNotFoundException{

@@ -3,6 +3,7 @@ package com.example.model;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 
 import com.example.FructFactory.AppleFactory;
@@ -15,21 +16,21 @@ import com.example.effects.Effect;
 import com.example.effects.GameOverEffect;
 import com.example.fructs.Fruct;
 import com.example.model.DrivingDirections.Direction;
+import com.example.myPanes.FieldGrid;
 
 public class Model {
-    final int height;
-    final int width;
+    public final int height;
+    public final int width;
     private int score = 0;
     private double delay = 150;
     private boolean isProtected = false;
+
     Boolean[][] field;
-
     private SnakeDeque snake;
-
     ArrayList<Effect> effects = new ArrayList<>();
 
     private ArrayList<Coordinates> freeCells = new ArrayList<>();
-    private ArrayList<Fruct> fructs = new ArrayList<>();
+    private HashSet<Fruct> fructs = new HashSet<>();
     private ArrayList<Fruct> newFructs = new ArrayList<>();
     private ArrayList<Fruct> deadFructs = new ArrayList<>();
     private ArrayList<FructFactory> fructFactorys = new ArrayList<>(Arrays.asList(
@@ -40,8 +41,16 @@ public class Model {
         new ShieldFactory()
     ));
 
+    FieldGrid grid;
+
+    public void registerGridPane(FieldGrid grid){
+        this.grid = grid;
+    }
+
     public void increaseSnake(){
-        snake.increaseSnake();
+        var newTail = snake.increaseSnake();
+        field[newTail.r][newTail.c] = false;
+        freeCells.remove(newTail);
     }
 
     public void increaseSpeed(){
@@ -55,10 +64,6 @@ public class Model {
         } else {
             //message to grid 
         }
-    }
-
-    public void getExitTheField(){
-        //message to grid
     }
 
     public void setShield(){
@@ -75,40 +80,54 @@ public class Model {
     }
 
     public void deleteEatenObject(){
-        Fruct deletedFruct = fructs.get(0);
-        for(Fruct f:fructs){
-            if(f.getCoordinates().equals(snake.getFirst())){
-                deletedFruct = f;
+        Coordinates head = snake.getFirst();
+
+        Fruct rmFruct = null;
+        for(Fruct i:fructs){
+            if(i.getCoordinates().equals(head)){
+                rmFruct = i;
             }
         }
-        fructs.remove(deletedFruct);
+        fructs.remove(rmFruct);
     }
 
     private Coordinates getRandomFreeCell(){
         if(freeCells.size() == 0) return null;
-
         Random rnd = new Random();
-        int rndCell = rnd.nextInt(freeCells.size());
 
-        return freeCells.get(rndCell);
+
+        int rndCell; Coordinates freeCell;
+        
+        do{
+            rndCell = rnd.nextInt(freeCells.size());
+            freeCell = freeCells.get(rndCell);
+            freeCells.remove(freeCell);
+        }while(field[freeCell.r][freeCell.c] != null);
+
+        if(snake.contains(freeCell)){
+            System.out.println("field" + field[freeCell.r][freeCell.c]);
+            //System.out.println("free" + freeCells.contains(freeCell));
+        }
+
+        return freeCell;
     }
 
     public void generateFructs() throws FileNotFoundException{
 
-        while(!fructs.isEmpty()){
-            Fruct i = fructs.get(0);
-            field[i.getRow()][i.getCol()] = null;
-            freeCells.add(i.getCoordinates());
+        for(Fruct i:fructs){
+            if(!i.getCoordinates().equals(snake.getFirst())){
+                field[i.getRow()][i.getCol()] = null;
+                freeCells.add(i.getCoordinates());  
+            }
             deadFructs.add(i);
-            fructs.remove(0);
         }
+        fructs.clear();
 
         for(FructFactory f:fructFactorys){
             for(int i=0;i<f.getCountOfFructs();i++){
-                if(freeCells.size() == 0) return;
+                if(freeCells.isEmpty()) return;
             
                 Coordinates cell = getRandomFreeCell();
-                freeCells.remove(cell);
 
                 field[cell.r][cell.c] = true;
                 Fruct newFruct = f.getFruct(cell.r, cell.c, this);
@@ -118,16 +137,21 @@ public class Model {
         }
     }
 
-    public void updateSnake() throws FileNotFoundException{
+    public SnakeUpdate updateSnake() throws FileNotFoundException{
         SnakeUpdate update = snake.update();
+
         freeCells.add(update.deadTail);
         field[update.deadTail.r][update.deadTail.c] = null;
         
         Boolean fieldState = field[update.newHead.r][update.newHead.c];
-        field[update.newHead.r][update.newHead.c] = false;
-        
 
-        if(fieldState == null) return;
+        System.out.println(fieldState);
+
+        if(fieldState == null) {
+            field[update.newHead.r][update.newHead.c] = false;
+            freeCells.remove(update.newHead);
+            return update;
+        }
 
         if(fieldState){
             for(Fruct i:fructs){
@@ -140,11 +164,16 @@ public class Model {
             effects.add(new GameOverEffect(this));
         }
 
+        field[update.newHead.r][update.newHead.c] = false;
+        freeCells.remove(update.newHead);
+
         while(!effects.isEmpty()){
             Effect i = effects.get(0);
             i.comeTrue();
             effects.remove(0);
         }
+
+        return update;
     }
 
     public Model(int h, int w) throws FileNotFoundException{
@@ -170,15 +199,20 @@ public class Model {
 
     //get && set
 
-    public ModelUpdate getNextState(){
+    public ModelUpdate getNextState() throws FileNotFoundException{
+        newFructs.clear();
+        deadFructs.clear();
 
-        var snakeUpdate = snake.update();
+        SnakeUpdate snakeUpdate = updateSnake();
+        grid.update(new ModelUpdate(snakeUpdate, newFructs, deadFructs));
 
         return new ModelUpdate(snakeUpdate, newFructs, deadFructs);
     }
 
+    //
     public ModelInfo getInfo(){
         printField();
+
         return new ModelInfo(fructs, snake.toArrayList(), false);
     }
 
@@ -233,7 +267,7 @@ public class Model {
             System.out.println("iter " + i + " ------------------------------------------------------------------");
             m.printField();
             System.out.println();
-            if(i == 3)m.snake.increaseSnake();
+            if(i!=0)m.snake.increaseSnake();
             m.printSnake();
             System.out.println();
             m.updateSnake();
