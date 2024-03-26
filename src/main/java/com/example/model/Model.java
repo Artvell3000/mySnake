@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
+import com.example.Game;
 import com.example.FructFactory.AppleFactory;
 import com.example.FructFactory.BombFactory;
 import com.example.FructFactory.FructFactory;
@@ -24,6 +25,7 @@ public class Model {
     private int score = 0;
     private double delay = 150;
     private boolean isProtected = false;
+    private boolean isGameOver = false;
 
     Boolean[][] field;
     private SnakeDeque snake;
@@ -62,7 +64,7 @@ public class Model {
         if(isProtected){
             isProtected = false;
         } else {
-            //message to grid 
+            isGameOver = true; 
         }
     }
 
@@ -200,6 +202,10 @@ public class Model {
     //get && set
 
     public ModelUpdate getNextState() throws FileNotFoundException{
+        if (isGameOver) {
+            return null;
+        }
+
         newFructs.clear();
         deadFructs.clear();
 
@@ -209,7 +215,6 @@ public class Model {
         return new ModelUpdate(snakeUpdate, newFructs, deadFructs);
     }
 
-    //
     public ModelInfo getInfo(){
         printField();
 
@@ -220,9 +225,8 @@ public class Model {
         snake.setDirection(d);
     }
 
-    //print
-
     private void printField(){
+        System.out.println("FIELD :");
         for(int r=0;r<height;r++){
 
             String iter = String.valueOf(r);
@@ -254,6 +258,7 @@ public class Model {
     }
 
     private void printSnake(){
+        System.out.println("SNAKE : ");
         for(Coordinates i:snake){
             System.out.println(i.toString());
         }
@@ -272,6 +277,10 @@ public class Model {
             System.out.println();
             m.updateSnake();
         }
+    }
+
+    public String getScore() {
+        return String.valueOf(score);
     }
     
 }

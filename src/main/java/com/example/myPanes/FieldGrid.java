@@ -55,19 +55,14 @@ public class FieldGrid extends GridPane{
         Coordinates dead = modelUpdate.snakeUpdate.deadTail;
         fieldPanes[dead.r][dead.c].getChildren().removeIf(x -> x instanceof SnakePane);
 
-
-        //System.out.println("DEAD: ");
         for(Fruct i:modelUpdate.deadFructs){
             Coordinates cord = i.getCoordinates();
             fieldPanes[cord.r][cord.c].getChildren().removeIf(x -> x instanceof ImageView);
-            //System.out.println(cord.toString());
         }
 
-        //System.out.println("NEW: ");
         for(Fruct i:modelUpdate.newFructs){
             Coordinates cord = i.getCoordinates();
             fieldPanes[cord.r][cord.c].getChildren().add(i.getImageView());
-            //System.out.println(cord.toString());
         }
     }
 
@@ -83,9 +78,9 @@ public class FieldGrid extends GridPane{
             fieldPanes[i.getRow()][i.getCol()].getChildren().add(i.getImageView());
         }
 
-        System.out.println("snake: ");
+        //System.out.println("snake: ");
         for(Coordinates i:info.snake){
-            System.out.println(i.toString());
+            //System.out.println(i.toString());
             fieldPanes[i.r][i.c].getChildren().add(
                 new SnakePane(info.isProtected)
             );

@@ -19,7 +19,7 @@ import com.example.myPanes.FieldGrid;
 
 public class App extends Application {
     final int height = 41, width = 21;
-    final double delay = 100;
+    final double delay = 150;
     boolean isPaused = false;
     Model model = null;
     Timeline timeline = new Timeline();
@@ -30,6 +30,13 @@ public class App extends Application {
         Label scoreLabel = new Label("0");
         scoreLabel.setStyle(Resources.styleScore);
         return scoreLabel;
+    }
+
+    private Label getLabelForPause(){
+        Label pLabel = new Label(Resources.textPause);
+        pLabel.setStyle(Resources.stylePause);
+        pLabel.setVisible(false);
+        return pLabel;
     }
 
     private Label getLabelForGameOver(){
@@ -43,17 +50,21 @@ public class App extends Application {
     public void start(@SuppressWarnings("exports") Stage stage) throws FileNotFoundException{
 
         model = new Model(height, width);
+        Label lScore = getLabelForScore();
+        Label lPause = getLabelForPause();
+        Label lGameOver = getLabelForGameOver();
         
         FieldGrid grid = new FieldGrid(model);
 
         VBox vbox = new VBox();
-        vbox.getChildren().add(getLabelForScore());
+        vbox.getChildren().add(lScore);
         vbox.getChildren().add(grid);
 
         StackPane root = new StackPane();
         
         root.getChildren().add(vbox);
-        root.getChildren().add(getLabelForGameOver());
+        root.getChildren().add(lGameOver);
+        root.getChildren().add(lPause);
         
         scene = new Scene(root);
         grid.redraw(model.getInfo());
@@ -62,12 +73,14 @@ public class App extends Application {
             new KeyFrame(Duration.millis(delay), e -> {
                 try {
                     model.getNextState();
+                    lScore.setText(model.getScore());
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
             })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
+        
         timeline.play();
 
         scene.setOnKeyPressed(event -> {
@@ -87,12 +100,20 @@ public class App extends Application {
                     model.setDirection(Direction.LEFT);
                     break;
                 case "O":
-                    if(isPaused)timeline.stop();
-                    else timeline.play();
+                    if(isPaused){
+                        timeline.stop();
+                        lPause.setVisible(true);
+                    }
+                    else {
+                        timeline.play();
+                        lPause.setVisible(false);
+                    }
                     isPaused = !isPaused;
                     break;
+                case "T":
+                    timeline.setRate(2.0);
+                    break;
             }
-            //System.out.println("Key Pressed: " + keyCode.getChar());
         });
 
         stage.setTitle(Resources.textTitle);

@@ -3,9 +3,11 @@ package com.example;
 public class Resources {
     static public final String textTitle = "SNAKE";
     static public final String textGameOver = "GAME OVER";
+    static public final String textPause = "PAUSE";
 
     static public final String styleScore = "-fx-font-size:20";
     static public final String styleGameOver = "-fx-font-size:50";
+    static public final String stylePause = "-fx-font-size:50";
 
     static public final String styleProtectedSnake = "-fx-background-color: #ffd700;";
     static public final String styleNoProtectedSnake = "-fx-background-color: green;";
