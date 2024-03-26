@@ -28,7 +28,7 @@ public class Model {
     private boolean isGameOver = false;
 
     Boolean[][] field;
-    private SnakeDeque snake;
+    SnakeDeque snake;
     ArrayList<Effect> effects = new ArrayList<>();
 
     private ArrayList<Coordinates> freeCells = new ArrayList<>();
@@ -44,9 +44,14 @@ public class Model {
     ));
 
     FieldGrid grid;
+    Game game;
 
     public void registerGridPane(FieldGrid grid){
         this.grid = grid;
+    }
+
+    public void registerGame(Game game){
+        this.game = game;
     }
 
     public void increaseSnake(){
@@ -56,21 +61,22 @@ public class Model {
     }
 
     public void increaseSpeed(){
-        delay+=10;
-        //update speed
+        delay-=30;
+        game.increaseSpeed(delay);
     }
 
     public void checkGameOver(){
         if(isProtected){
             isProtected = false;
+            grid.update(snake.toArrayList(), isProtected);
         } else {
             isGameOver = true; 
         }
     }
 
-    public void setShield(){
+    public void setShield() throws FileNotFoundException{
         isProtected = true;
-        //message to grid
+        grid.update(snake.toArrayList(), isProtected);
     }
 
     public void increaseScore(int i){
@@ -147,7 +153,7 @@ public class Model {
         
         Boolean fieldState = field[update.newHead.r][update.newHead.c];
 
-        System.out.println(fieldState);
+        //System.out.println(fieldState);
 
         if(fieldState == null) {
             field[update.newHead.r][update.newHead.c] = false;
@@ -201,23 +207,20 @@ public class Model {
 
     //get && set
 
-    public ModelUpdate getNextState() throws FileNotFoundException{
+    public void getNextState() throws FileNotFoundException{
         if (isGameOver) {
-            return null;
+            return;
         }
 
         newFructs.clear();
         deadFructs.clear();
 
         SnakeUpdate snakeUpdate = updateSnake();
-        grid.update(new ModelUpdate(snakeUpdate, newFructs, deadFructs));
+        grid.update(new ModelUpdate(isProtected, snakeUpdate, newFructs, deadFructs));
 
-        return new ModelUpdate(snakeUpdate, newFructs, deadFructs);
     }
 
     public ModelInfo getInfo(){
-        printField();
-
         return new ModelInfo(fructs, snake.toArrayList(), false);
     }
 

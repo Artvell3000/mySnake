@@ -1,7 +1,5 @@
 package com.example;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -9,11 +7,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
 
-import com.example.model.Model;
 import com.example.model.DrivingDirections.Direction;
 import com.example.myPanes.FieldGrid;
 
@@ -21,8 +17,8 @@ public class App extends Application {
     final int height = 41, width = 21;
     final double delay = 150;
     boolean isPaused = false;
-    Model model = null;
-    Timeline timeline = new Timeline();
+
+    Game game;
     
     private static Scene scene;
 
@@ -49,12 +45,13 @@ public class App extends Application {
     @Override
     public void start(@SuppressWarnings("exports") Stage stage) throws FileNotFoundException{
 
-        model = new Model(height, width);
+        game = new Game();
+
         Label lScore = getLabelForScore();
         Label lPause = getLabelForPause();
         Label lGameOver = getLabelForGameOver();
         
-        FieldGrid grid = new FieldGrid(model);
+        FieldGrid grid = new FieldGrid(game.model);
 
         VBox vbox = new VBox();
         vbox.getChildren().add(lScore);
@@ -67,51 +64,37 @@ public class App extends Application {
         root.getChildren().add(lPause);
         
         scene = new Scene(root);
-        grid.redraw(model.getInfo());
-
-        timeline.getKeyFrames().add(
-            new KeyFrame(Duration.millis(delay), e -> {
-                try {
-                    model.getNextState();
-                    lScore.setText(model.getScore());
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                }
-            })
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        
-        timeline.play();
+        grid.redraw(game.model.getInfo());
 
         scene.setOnKeyPressed(event -> {
             KeyCode keyCode = event.getCode();
 
             switch (keyCode.getChar()) {
                 case "A":
-                    model.setDirection(Direction.UP);
+                    game.model.setDirection(Direction.UP);
                     break;
                 case "D":
-                    model.setDirection(Direction.DOWN);
+                    game.model.setDirection(Direction.DOWN);
                     break;
                 case "S":
-                    model.setDirection(Direction.RIGHT);
+                    game.model.setDirection(Direction.RIGHT);
                     break;
                 case "W":
-                    model.setDirection(Direction.LEFT);
+                    game.model.setDirection(Direction.LEFT);
                     break;
                 case "O":
                     if(isPaused){
-                        timeline.stop();
+                        game.timeline.stop();
                         lPause.setVisible(true);
                     }
                     else {
-                        timeline.play();
+                        game.timeline.play();
                         lPause.setVisible(false);
                     }
                     isPaused = !isPaused;
                     break;
                 case "T":
-                    timeline.setRate(2.0);
+                    game.timeline.setRate(2.0);
                     break;
             }
         });

@@ -1,6 +1,8 @@
 package com.example.myPanes;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import com.example.Resources;
 import com.example.fructs.Fruct;
@@ -8,6 +10,7 @@ import com.example.model.Coordinates;
 import com.example.model.Model;
 import com.example.model.ModelInfo;
 import com.example.model.ModelUpdate;
+import com.example.model.SnakeDeque;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -28,6 +31,7 @@ public class FieldGrid extends GridPane{
         this.style1 = s1;
         this.style2 = s2;
         fieldPanes = new Pane[height][width];
+
         this.setGridLinesVisible(true);
 
         for(int r=0;r<height;r++){
@@ -47,14 +51,25 @@ public class FieldGrid extends GridPane{
         this(model,Resources.styleCell1, Resources.styleCell2);
     }
 
+    public void update(ArrayList<Coordinates> snake, boolean isProtected){
+        System.out.println("update shield " + isProtected);
+        
+        for(Coordinates i:snake){
+            fieldPanes[i.r][i.c].getChildren().remove(0);
+            fieldPanes[i.r][i.c].getChildren().add(new SnakePane(isProtected));
+        }
+    }
+
     public void update(ModelUpdate modelUpdate) throws FileNotFoundException{
+    
         Coordinates head = modelUpdate.snakeUpdate.newHead;
         if(!fieldPanes[head.r][head.c].getChildren().isEmpty())fieldPanes[head.r][head.c].getChildren().remove(0);
-        fieldPanes[head.r][head.c].getChildren().add(new SnakePane(false));
+        SnakePane sPane = new SnakePane(modelUpdate.isProtected);
+        fieldPanes[head.r][head.c].getChildren().add(sPane);
 
         Coordinates dead = modelUpdate.snakeUpdate.deadTail;
         fieldPanes[dead.r][dead.c].getChildren().removeIf(x -> x instanceof SnakePane);
-
+        
         for(Fruct i:modelUpdate.deadFructs){
             Coordinates cord = i.getCoordinates();
             fieldPanes[cord.r][cord.c].getChildren().removeIf(x -> x instanceof ImageView);
@@ -74,15 +89,13 @@ public class FieldGrid extends GridPane{
         }
 
         for(Fruct i:info.fructs){
-            System.out.println(i.symbol + " " + i.getCoordinates().toString());
             fieldPanes[i.getRow()][i.getCol()].getChildren().add(i.getImageView());
         }
 
-        //System.out.println("snake: ");
         for(Coordinates i:info.snake){
-            //System.out.println(i.toString());
+            SnakePane sPane = new SnakePane(info.isProtected);
             fieldPanes[i.r][i.c].getChildren().add(
-                new SnakePane(info.isProtected)
+                sPane
             );
         }
     }
