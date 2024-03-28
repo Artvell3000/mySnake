@@ -10,6 +10,8 @@ public class BombFactory extends FructFactory{
 
     @Override
     public Fruct getFruct(int x, int y, Model model) throws FileNotFoundException {
+
+
         return new Bomb(x,y,model);
     }
 
@@ -17,5 +19,9 @@ public class BombFactory extends FructFactory{
     public int getCountOfFructs() {
         return 5;
     }
-    
+
+    @Override
+    public boolean checkTheConditions(Model model){
+        return model.getScore() > 30;
+    }
 }

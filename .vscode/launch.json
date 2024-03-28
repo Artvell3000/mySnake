@@ -13,13 +13,6 @@
         },
         {
             "type": "java",
-            "name": "Model",
-            "request": "launch",
-            "mainClass": "com.example/com.example.Model",
-            "projectName": "snake"
-        },
-        {
-            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

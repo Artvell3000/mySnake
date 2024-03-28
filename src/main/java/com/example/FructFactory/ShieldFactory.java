@@ -17,5 +17,10 @@ public class ShieldFactory extends FructFactory{
     public int getCountOfFructs() {
         return 1;
     }
+
+    @Override
+    public boolean checkTheConditions(Model model){
+        return model.getScore() > 50;
+    }
     
 }

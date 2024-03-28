@@ -22,5 +22,5 @@ public class Resources {
     static public final String pathToImgShield = "/home/art/Документы/java_projects/snake/src/main/java/com/example/img/img_shield.png";
     static public final String pathToImgBomb = "/home/art/Документы/java_projects/snake/src/main/java/com/example/img/img_bomb.png";
     static public final String pathToImgGoldApple="/home/art/Документы/java_projects/snake/src/main/java/com/example/img/img_gold_apple.png";
-
+    static public final String pathToImgPortal = "/home/art/Документы/java_projects/snake/src/main/java/com/example/img/img_portal.png";
 }

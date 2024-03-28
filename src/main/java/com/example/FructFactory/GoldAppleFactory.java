@@ -1,6 +1,7 @@
 package com.example.FructFactory;
 
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 import com.example.fructs.Fruct;
 import com.example.fructs.GoldApple;
@@ -16,6 +17,35 @@ public class GoldAppleFactory extends FructFactory{
     @Override
     public int getCountOfFructs() {
         return 1;
+    }
+
+    @Override
+    public boolean checkTheConditions(Model model){
+        Random r = new Random();
+        int ch = r.nextInt()%100;
+        return model.getScore() > 0 && ch < 21 && model.getCountOfFreeCells() > 20;
+    }
+
+    @Override
+    public void addSideFructs(Model model, Fruct f) throws FileNotFoundException{
+        int startR = f.getRow()-1;
+        int startC = f.getCol()-1;
+        int endR = f.getRow()+1;
+        int endC = f.getCol()+1;
+
+        if(startR < 0) startR++;
+        if(startC <0) startC++;
+        if(endC > model.width) endC--;
+        if(endR > model.height) endR--;
+
+        for(int r=startR;r<=endR;r++){
+            for(int c=startC;c<=endC;c++){
+                if(c == f.getCol()) continue;
+                BombFactory factory = new BombFactory();
+                Fruct newFruct = factory.getFruct(r, c, model);
+                model.addFruct(newFruct);
+            }
+        }
     }
     
 }

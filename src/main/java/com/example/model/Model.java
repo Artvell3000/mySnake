@@ -46,6 +46,14 @@ public class Model {
     FieldGrid grid;
     Game game;
 
+    public boolean isFilled(){
+        return freeCells.isEmpty();
+    }
+
+    public boolean isFreeCell(Coordinates cord){
+        return freeCells.contains(cord);
+    }
+
     public void registerGridPane(FieldGrid grid){
         this.grid = grid;
     }
@@ -99,25 +107,31 @@ public class Model {
         fructs.remove(rmFruct);
     }
 
-    private Coordinates getRandomFreeCell(){
+    public Coordinates getRandomFreeCell(){
         if(freeCells.size() == 0) return null;
         Random rnd = new Random();
 
 
         int rndCell; Coordinates freeCell;
         
-        do{
+        //do{
             rndCell = rnd.nextInt(freeCells.size());
             freeCell = freeCells.get(rndCell);
-            freeCells.remove(freeCell);
-        }while(field[freeCell.r][freeCell.c] != null);
-
-        if(snake.contains(freeCell)){
-            System.out.println("field" + field[freeCell.r][freeCell.c]);
-            //System.out.println("free" + freeCells.contains(freeCell));
-        }
+            
+        //}while(field[freeCell.r][freeCell.c] != null);
+        
 
         return freeCell;
+    }
+
+    public boolean addFruct(Fruct f){
+        if(field[f.getRow()][f.getCol()]!=null) return false;
+
+        field[f.getRow()][f.getCol()] = true;
+        fructs.add(f);
+        newFructs.add(f);
+        freeCells.remove(f.getCoordinates());
+        return true;
     }
 
     public void generateFructs() throws FileNotFoundException{
@@ -133,14 +147,7 @@ public class Model {
 
         for(FructFactory f:fructFactorys){
             for(int i=0;i<f.getCountOfFructs();i++){
-                if(freeCells.isEmpty()) return;
-            
-                Coordinates cell = getRandomFreeCell();
-
-                field[cell.r][cell.c] = true;
-                Fruct newFruct = f.getFruct(cell.r, cell.c, this);
-                fructs.add(newFruct);
-                newFructs.add(newFruct);
+                f.generateFruct(this);
             } 
         }
     }
@@ -206,6 +213,10 @@ public class Model {
     
 
     //get && set
+
+    public int getCountOfFreeCells(){
+        return freeCells.size();
+    }
 
     public void getNextState() throws FileNotFoundException{
         if (isGameOver) {
@@ -282,8 +293,12 @@ public class Model {
         }
     }
 
-    public String getScore() {
+    public String getScoreString() {
         return String.valueOf(score);
+    }
+
+    public int getScore(){
+        return score;
     }
     
 }
