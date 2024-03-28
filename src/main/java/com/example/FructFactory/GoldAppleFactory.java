@@ -43,7 +43,12 @@ public class GoldAppleFactory extends FructFactory{
                 if(c == f.getCol()) continue;
                 BombFactory factory = new BombFactory();
                 Fruct newFruct = factory.getFruct(r, c, model);
-                model.addFruct(newFruct);
+                try {
+                    model.addFruct(newFruct);
+                } catch (Exception e) {
+                    System.out.println(r + " " + c);
+                }
+                
             }
         }
     }

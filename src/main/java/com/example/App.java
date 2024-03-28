@@ -52,6 +52,7 @@ public class App extends Application {
         Label lGameOver = getLabelForGameOver();
         
         FieldGrid grid = new FieldGrid(game.model);
+        //System.out.println(game.model.height + "height");
 
         VBox vbox = new VBox();
         vbox.getChildren().add(lScore);
