@@ -12,6 +12,7 @@ import com.example.FructFactory.BombFactory;
 import com.example.FructFactory.FructFactory;
 import com.example.FructFactory.GoldAppleFactory;
 import com.example.FructFactory.PepperFactory;
+import com.example.FructFactory.PortalFactory;
 import com.example.FructFactory.ShieldFactory;
 import com.example.effects.Effect;
 import com.example.effects.GameOverEffect;
@@ -40,11 +41,16 @@ public class Model {
         new BombFactory(),
         new GoldAppleFactory(),
         new PepperFactory(),
-        new ShieldFactory()
+        new ShieldFactory(),
+        new PortalFactory()
     ));
 
     FieldGrid grid;
     Game game;
+
+    public void addToSnakePlan(Coordinates c){
+        snake.addToPlan(c);
+    }
 
     public boolean isFilled(){
         return freeCells.isEmpty();
@@ -154,6 +160,45 @@ public class Model {
 
     public SnakeUpdate updateSnake() throws FileNotFoundException{
         SnakeUpdate update = snake.update();
+
+        freeCells.add(update.deadTail);
+        field[update.deadTail.r][update.deadTail.c] = null;
+        
+        Boolean fieldState = field[update.newHead.r][update.newHead.c];
+
+        //System.out.println(fieldState);
+
+        if(fieldState == null) {
+            field[update.newHead.r][update.newHead.c] = false;
+            freeCells.remove(update.newHead);
+            return update;
+        }
+
+        if(fieldState){
+            for(Fruct i:fructs){
+                if(update.newHead.equals(i.getCoordinates())){
+                    effects.addAll(i.getEffect());
+                    break;
+                }
+            }
+        }else{
+            effects.add(new GameOverEffect(this));
+        }
+
+        field[update.newHead.r][update.newHead.c] = false;
+        freeCells.remove(update.newHead);
+
+        while(!effects.isEmpty()){
+            Effect i = effects.get(0);
+            i.comeTrue();
+            effects.remove(0);
+        }
+
+        return update;
+    }
+
+    public SnakeUpdate updateSnake(Coordinates cord) throws FileNotFoundException{
+        SnakeUpdate update = snake.update(cord);
 
         freeCells.add(update.deadTail);
         field[update.deadTail.r][update.deadTail.c] = null;
