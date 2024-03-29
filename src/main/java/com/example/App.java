@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 
+import com.example.ObserverPanes.FieldGrid;
 import com.example.model.DrivingDirections.Direction;
-import com.example.myPanes.FieldGrid;
 
 public class App extends Application {
     final int height = 41, width = 21;

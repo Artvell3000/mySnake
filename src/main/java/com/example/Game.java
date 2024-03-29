@@ -16,7 +16,7 @@ public class Game {
     double delay = 150;
     KeyFrame keyFrame = new KeyFrame(Duration.millis(delay), e -> {
                 try {
-                    model.getNextState();
+                    model.goToNextState();
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
@@ -48,7 +48,7 @@ public class Game {
         timeline = new Timeline();
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
             try {
-                model.getNextState();
+                model.goToNextState();
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
             }

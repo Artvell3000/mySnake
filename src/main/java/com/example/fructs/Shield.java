@@ -28,4 +28,9 @@ public class Shield extends Fruct{
     public boolean isApple() {
         return false;
     }
+
+    @Override
+    public boolean isDinanic() {
+        return false;
+    }
 }

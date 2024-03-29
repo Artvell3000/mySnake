@@ -1,4 +1,4 @@
-package com.example.myPanes;
+package com.example.ObserverPanes;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
@@ -11,6 +11,7 @@ import com.example.model.Model;
 import com.example.model.ModelInfo;
 import com.example.model.ModelUpdate;
 import com.example.model.SnakeDeque;
+import com.example.myPanes.SnakePane;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;

@@ -30,5 +30,10 @@ public class GoldApple extends Fruct{
     public boolean isApple() {
         return true;
     }
+
+    @Override
+    public boolean isDinanic() {
+        return false;
+    }
     
 }

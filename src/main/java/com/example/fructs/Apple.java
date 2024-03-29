@@ -29,4 +29,9 @@ public class Apple extends Fruct{
     public boolean isApple() {
         return true;
     }
+
+    @Override
+    public boolean isDinanic() {
+        return false;
+    }
 }

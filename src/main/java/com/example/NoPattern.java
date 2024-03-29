@@ -6,9 +6,10 @@ import java.util.Random;
 import com.example.FructFactory.BombFactory;
 import com.example.FructFactory.FructFactory;
 import com.example.FructFactory.GoldAppleFactory;
+import com.example.FructFactory.PortalFactory;
 import com.example.FructFactory.ShieldFactory;
 import com.example.fructs.Fruct;
-import com.example.fructs.Shield;
+import com.example.fructs.Portal;
 import com.example.model.Coordinates;
 import com.example.model.Model;
 
@@ -30,9 +31,27 @@ public class NoPattern {
             checkTheConditions =  (model.getScore() > 0 && ch < 21 && model.getCountOfFreeCells() > 20);
         }
 
-        Coordinates cell = model.getRandomFreeCell();
-        Fruct newFruct = f.getFruct(cell.r, cell.c, model);
-        model.addFruct(newFruct);
+        Fruct newFruct;
+
+        if(f instanceof PortalFactory){
+            Coordinates cell1 = model.getRandomFreeCell();
+            Fruct newFruct1 = f.getFruct(cell1.r, cell1.c, model);
+            model.addFruct(newFruct1);
+
+            Coordinates cell2 = model.getRandomFreeCell();
+            Fruct newFruct2 = f.getFruct(cell2.r, cell2.c, model);
+            model.addFruct(newFruct2);
+
+            ((Portal)newFruct1).setSecondPortal((Portal)newFruct2);
+            ((Portal)newFruct2).setSecondPortal((Portal)newFruct1);
+            newFruct = newFruct1;
+        }else{
+            Coordinates cell = model.getRandomFreeCell();
+            newFruct = f.getFruct(cell.r, cell.c, model);
+            model.addFruct(newFruct);
+        }
+
+        
 
         if(f instanceof GoldAppleFactory){
             int startR = newFruct.getRow()-1;

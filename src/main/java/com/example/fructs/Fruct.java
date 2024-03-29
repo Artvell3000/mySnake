@@ -52,6 +52,7 @@ public abstract class Fruct{
         return view;
     }
 
+    public abstract boolean isDinanic();
     public abstract ArrayList<Effect> getEffect();
     public abstract boolean isApple();
 }

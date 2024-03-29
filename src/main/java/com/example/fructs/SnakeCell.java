@@ -41,4 +41,9 @@ public class SnakeCell extends Fruct{
         );
         return pane;
     }
+
+    @Override
+    public boolean isDinanic() {
+        return false;
+    }
 }

@@ -14,11 +14,12 @@ import com.example.FructFactory.GoldAppleFactory;
 import com.example.FructFactory.PepperFactory;
 import com.example.FructFactory.PortalFactory;
 import com.example.FructFactory.ShieldFactory;
+import com.example.ObserverPanes.FieldGrid;
+import com.example.ObserverPanes.Observer;
 import com.example.effects.Effect;
 import com.example.effects.GameOverEffect;
 import com.example.fructs.Fruct;
 import com.example.model.DrivingDirections.Direction;
-import com.example.myPanes.FieldGrid;
 
 public class Model {
     public final int height;
@@ -30,6 +31,7 @@ public class Model {
 
     Boolean[][] field;
     SnakeDeque snake;
+    SnakeUpdate snakeUpdate;
     ArrayList<Effect> effects = new ArrayList<>();
 
     private ArrayList<Coordinates> freeCells = new ArrayList<>();
@@ -44,6 +46,26 @@ public class Model {
         new ShieldFactory(),
         new PortalFactory()
     ));
+
+    ArrayList<Observer> observers = new ArrayList<>();
+
+    public void registerObservers(Observer b){
+        observers.add(b);
+    }
+
+    public boolean deleteObservers(Observer b){
+        return observers.remove(b);
+    }
+
+    public void notifyObservers(){
+        for(Observer i:observers){
+            i.update(
+                new ModelUpdate(
+                    isProtected, null, newFructs, deadFructs
+                    )
+            );
+        }
+    }
 
     FieldGrid grid;
     Game game;
@@ -197,45 +219,6 @@ public class Model {
         return update;
     }
 
-    public SnakeUpdate updateSnake(Coordinates cord) throws FileNotFoundException{
-        SnakeUpdate update = snake.update(cord);
-
-        freeCells.add(update.deadTail);
-        field[update.deadTail.r][update.deadTail.c] = null;
-        
-        Boolean fieldState = field[update.newHead.r][update.newHead.c];
-
-        //System.out.println(fieldState);
-
-        if(fieldState == null) {
-            field[update.newHead.r][update.newHead.c] = false;
-            freeCells.remove(update.newHead);
-            return update;
-        }
-
-        if(fieldState){
-            for(Fruct i:fructs){
-                if(update.newHead.equals(i.getCoordinates())){
-                    effects.addAll(i.getEffect());
-                    break;
-                }
-            }
-        }else{
-            effects.add(new GameOverEffect(this));
-        }
-
-        field[update.newHead.r][update.newHead.c] = false;
-        freeCells.remove(update.newHead);
-
-        while(!effects.isEmpty()){
-            Effect i = effects.get(0);
-            i.comeTrue();
-            effects.remove(0);
-        }
-
-        return update;
-    }
-
     public Model(int h, int w) throws FileNotFoundException{
         height = h;
         width = w;
@@ -263,7 +246,7 @@ public class Model {
         return freeCells.size();
     }
 
-    public void getNextState() throws FileNotFoundException{
+    public void goToNextState() throws FileNotFoundException{
         if (isGameOver) {
             return;
         }

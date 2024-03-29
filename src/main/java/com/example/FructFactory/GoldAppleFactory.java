@@ -23,7 +23,7 @@ public class GoldAppleFactory extends FructFactory{
     public boolean checkTheConditions(Model model){
         Random r = new Random();
         int ch = r.nextInt()%100;
-        return model.getScore() > 0 && ch < 21 && model.getCountOfFreeCells() > 20;
+        return model.getScore() > 100 && ch < 21 && model.getCountOfFreeCells() > 20;
     }
 
     @Override
