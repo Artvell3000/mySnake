@@ -1,19 +1,20 @@
 package com.example.ObserverPanes;
 
-import com.example.model.Model;
+import java.io.FileNotFoundException;
 
-import javafx.scene.layout.GridPane;
+import com.example.model.Model;
+import com.example.model.ModelUpdate;
 
 public class GridObserver implements Observer{
-    GridPane grid;
+    FieldGrid grid;
 
-    GridObserver(Model model, GridPane grid){
-        this.grid = grid;
-        //model.registerGridPane(grid);
+    GridObserver(Model model){
+        model.registerObservers(this);
+        grid = new FieldGrid(model);
     }
 
     @Override
-    public void update(Object b) {
-        
+    public void update(Object b) throws FileNotFoundException {
+        grid.update((ModelUpdate)b);
     }
 }

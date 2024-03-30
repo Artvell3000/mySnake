@@ -31,7 +31,8 @@ public class Model {
 
     Boolean[][] field;
     SnakeDeque snake;
-    SnakeUpdate snakeUpdate;
+    SnakeUpdate snakeUpdate = null;
+    ModelUpdate modelUpdate = null;
     ArrayList<Effect> effects = new ArrayList<>();
 
     private ArrayList<Coordinates> freeCells = new ArrayList<>();
@@ -57,11 +58,12 @@ public class Model {
         return observers.remove(b);
     }
 
-    public void notifyObservers(){
+    public void notifyObservers() throws FileNotFoundException{
+
         for(Observer i:observers){
             i.update(
                 new ModelUpdate(
-                    isProtected, null, newFructs, deadFructs
+                    isProtected, snakeUpdate, newFructs, deadFructs
                     )
             );
         }
@@ -181,24 +183,24 @@ public class Model {
     }
 
     public SnakeUpdate updateSnake() throws FileNotFoundException{
-        SnakeUpdate update = snake.update();
+        snakeUpdate = snake.update();
 
-        freeCells.add(update.deadTail);
-        field[update.deadTail.r][update.deadTail.c] = null;
+        freeCells.add(snakeUpdate.deadTail);
+        field[snakeUpdate.deadTail.r][snakeUpdate.deadTail.c] = null;
         
-        Boolean fieldState = field[update.newHead.r][update.newHead.c];
+        Boolean fieldState = field[snakeUpdate.newHead.r][snakeUpdate.newHead.c];
 
         //System.out.println(fieldState);
 
         if(fieldState == null) {
-            field[update.newHead.r][update.newHead.c] = false;
-            freeCells.remove(update.newHead);
-            return update;
+            field[snakeUpdate.newHead.r][snakeUpdate.newHead.c] = false;
+            freeCells.remove(snakeUpdate.newHead);
+            return snakeUpdate;
         }
 
         if(fieldState){
             for(Fruct i:fructs){
-                if(update.newHead.equals(i.getCoordinates())){
+                if(snakeUpdate.newHead.equals(i.getCoordinates())){
                     effects.addAll(i.getEffect());
                     break;
                 }
@@ -207,8 +209,8 @@ public class Model {
             effects.add(new GameOverEffect(this));
         }
 
-        field[update.newHead.r][update.newHead.c] = false;
-        freeCells.remove(update.newHead);
+        field[snakeUpdate.newHead.r][snakeUpdate.newHead.c] = false;
+        freeCells.remove(snakeUpdate.newHead);
 
         while(!effects.isEmpty()){
             Effect i = effects.get(0);
@@ -216,7 +218,7 @@ public class Model {
             effects.remove(0);
         }
 
-        return update;
+        return snakeUpdate;
     }
 
     public Model(int h, int w) throws FileNotFoundException{

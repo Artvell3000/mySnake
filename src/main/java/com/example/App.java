@@ -16,7 +16,7 @@ import com.example.model.DrivingDirections.Direction;
 public class App extends Application {
     final int height = 41, width = 21;
     final double delay = 150;
-    boolean isPaused = false;
+    boolean isPaused = true;
 
     Game game;
     
