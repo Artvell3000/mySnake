@@ -1,11 +1,10 @@
 package com.example.ObserverPanes;
 
 import com.example.model.Model;
-import com.example.model.ModelUpdate;
 
 import javafx.scene.layout.GridPane;
 
-public class GridObserver extends Observer{
+public class GridObserver implements Observer{
     GridPane grid;
 
     GridObserver(Model model, GridPane grid){
@@ -14,8 +13,7 @@ public class GridObserver extends Observer{
     }
 
     @Override
-    public
-    void update(ModelUpdate update) {
+    public void update(Object b) {
         
     }
 }

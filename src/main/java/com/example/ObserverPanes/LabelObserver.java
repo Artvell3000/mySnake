@@ -5,7 +5,7 @@ import java.awt.Label;
 import com.example.model.Model;
 import com.example.model.ModelUpdate;
 
-public class LabelObserver extends Observer{
+public class LabelObserver implements Observer{
     Label label;
 
     LabelObserver(Model model, Label label){
@@ -13,8 +13,7 @@ public class LabelObserver extends Observer{
     }
 
     @Override
-    public
-    void update(ModelUpdate update) {
+    public void update(Object b) {
 
     }
     
