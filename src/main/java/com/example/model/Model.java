@@ -26,19 +26,14 @@ public class Model {
     public final int width;
     private int score = 0;
     private double delay = 150;
-    private boolean isProtected = false;
-    private boolean isGameOver = false;
 
     Boolean[][] field;
     SnakeDeque snake;
-    SnakeUpdate snakeUpdate = null;
-    ModelUpdate modelUpdate = null;
+    ModelUpdate modelUpdate = new ModelUpdate();
     ArrayList<Effect> effects = new ArrayList<>();
 
     private ArrayList<Coordinates> freeCells = new ArrayList<>();
     private HashSet<Fruct> fructs = new HashSet<>();
-    private ArrayList<Fruct> newFructs = new ArrayList<>();
-    private ArrayList<Fruct> deadFructs = new ArrayList<>();
     private ArrayList<FructFactory> fructFactorys = new ArrayList<>(Arrays.asList(
         new AppleFactory(),
         new BombFactory(),
@@ -49,6 +44,10 @@ public class Model {
     ));
 
     ArrayList<Observer> observers = new ArrayList<>();
+
+    public ModelUpdate getUpdateModelInfo(){
+        return modelUpdate;
+    }
 
     public void registerObservers(Observer b){
         observers.add(b);
@@ -61,11 +60,7 @@ public class Model {
     public void notifyObservers() throws FileNotFoundException{
 
         for(Observer i:observers){
-            i.update(
-                new ModelUpdate(
-                    isProtected, snakeUpdate, newFructs, deadFructs
-                    )
-            );
+            i.update();
         }
     }
 
@@ -104,17 +99,19 @@ public class Model {
     }
 
     public void checkGameOver(){
-        if(isProtected){
-            isProtected = false;
-            grid.update(snake.toArrayList(), isProtected);
+        if(modelUpdate.isProtected){
+            modelUpdate.isProtected = false;
+            modelUpdate.changeProtected = true;
+            grid.update(snake.toArrayList(), modelUpdate.isProtected);
         } else {
-            isGameOver = true; 
+            modelUpdate.isGameOver = true; 
         }
     }
 
     public void setShield() throws FileNotFoundException{
-        isProtected = true;
-        grid.update(snake.toArrayList(), isProtected);
+        modelUpdate.isProtected = true;
+        modelUpdate.changeProtected = true;
+        grid.update(snake.toArrayList(), modelUpdate.isProtected);
     }
 
     public void increaseScore(int i){
@@ -159,7 +156,7 @@ public class Model {
 
         field[f.getRow()][f.getCol()] = true;
         fructs.add(f);
-        newFructs.add(f);
+        modelUpdate.newFructs.add(f);
         freeCells.remove(f.getCoordinates());
         return true;
     }
@@ -171,7 +168,7 @@ public class Model {
                 field[i.getRow()][i.getCol()] = null;
                 freeCells.add(i.getCoordinates());  
             }
-            deadFructs.add(i);
+            modelUpdate.deadFructs.add(i);
         }
         fructs.clear();
 
@@ -183,24 +180,24 @@ public class Model {
     }
 
     public SnakeUpdate updateSnake() throws FileNotFoundException{
-        snakeUpdate = snake.update();
+        modelUpdate.snakeUpdate = snake.update();
 
-        freeCells.add(snakeUpdate.deadTail);
-        field[snakeUpdate.deadTail.r][snakeUpdate.deadTail.c] = null;
+        freeCells.add(modelUpdate.snakeUpdate.deadTail);
+        field[modelUpdate.snakeUpdate.deadTail.r][modelUpdate.snakeUpdate.deadTail.c] = null;
         
-        Boolean fieldState = field[snakeUpdate.newHead.r][snakeUpdate.newHead.c];
+        Boolean fieldState = field[modelUpdate.snakeUpdate.newHead.r][modelUpdate.snakeUpdate.newHead.c];
 
         //System.out.println(fieldState);
 
         if(fieldState == null) {
-            field[snakeUpdate.newHead.r][snakeUpdate.newHead.c] = false;
-            freeCells.remove(snakeUpdate.newHead);
-            return snakeUpdate;
+            field[modelUpdate.snakeUpdate.newHead.r][modelUpdate.snakeUpdate.newHead.c] = false;
+            freeCells.remove(modelUpdate.snakeUpdate.newHead);
+            return modelUpdate.snakeUpdate;
         }
 
         if(fieldState){
             for(Fruct i:fructs){
-                if(snakeUpdate.newHead.equals(i.getCoordinates())){
+                if(modelUpdate.snakeUpdate.newHead.equals(i.getCoordinates())){
                     effects.addAll(i.getEffect());
                     break;
                 }
@@ -209,8 +206,8 @@ public class Model {
             effects.add(new GameOverEffect(this));
         }
 
-        field[snakeUpdate.newHead.r][snakeUpdate.newHead.c] = false;
-        freeCells.remove(snakeUpdate.newHead);
+        field[modelUpdate.snakeUpdate.newHead.r][modelUpdate.snakeUpdate.newHead.c] = false;
+        freeCells.remove(modelUpdate.snakeUpdate.newHead);
 
         while(!effects.isEmpty()){
             Effect i = effects.get(0);
@@ -218,7 +215,7 @@ public class Model {
             effects.remove(0);
         }
 
-        return snakeUpdate;
+        return modelUpdate.snakeUpdate;
     }
 
     public Model(int h, int w) throws FileNotFoundException{
@@ -249,15 +246,15 @@ public class Model {
     }
 
     public void goToNextState() throws FileNotFoundException{
-        if (isGameOver) {
+        if (modelUpdate.isGameOver) {
             return;
         }
 
-        newFructs.clear();
-        deadFructs.clear();
+        modelUpdate.newFructs.clear();
+        modelUpdate.deadFructs.clear();
 
         SnakeUpdate snakeUpdate = updateSnake();
-        grid.update(new ModelUpdate(isProtected, snakeUpdate, newFructs, deadFructs));
+        grid.update(modelUpdate);
 
     }
 

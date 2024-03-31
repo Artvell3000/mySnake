@@ -13,7 +13,7 @@ public class LabelObserver implements Observer{
     }
 
     @Override
-    public void update(Object b) {
+    public void update() {
 
     }
     

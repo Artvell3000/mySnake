@@ -7,14 +7,16 @@ import com.example.model.ModelUpdate;
 
 public class GridObserver implements Observer{
     FieldGrid grid;
+    Model model;
 
     GridObserver(Model model){
+        this.model = model;
         model.registerObservers(this);
         grid = new FieldGrid(model);
     }
 
     @Override
-    public void update(Object b) throws FileNotFoundException {
-        grid.update((ModelUpdate)b);
+    public void update() throws FileNotFoundException {
+        grid.update(model.getUpdateModelInfo());
     }
 }

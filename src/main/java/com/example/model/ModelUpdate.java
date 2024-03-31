@@ -5,15 +5,11 @@ import java.util.ArrayList;
 import com.example.fructs.Fruct;
 
 public class ModelUpdate {
-    public final SnakeUpdate snakeUpdate;
-    public final ArrayList<Fruct> newFructs;
-    public final ArrayList<Fruct> deadFructs;
-    public final boolean isProtected;
+    public SnakeUpdate snakeUpdate;
+    public ArrayList<Fruct> newFructs = new ArrayList<>();
+    public ArrayList<Fruct> deadFructs = new ArrayList<>();
+    public boolean changeProtected = false;
 
-    ModelUpdate(Boolean isProtected, SnakeUpdate snakeUpdate, ArrayList<Fruct> newFructs, ArrayList<Fruct> deadFructs){
-        this.snakeUpdate = snakeUpdate;
-        this.newFructs = newFructs;
-        this.deadFructs = deadFructs;
-        this.isProtected = isProtected;
-    }
+    public boolean isProtected = false;
+    public boolean isGameOver = false;
 }
