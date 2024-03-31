@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
-import com.example.Game;
 import com.example.FructFactory.AppleFactory;
 import com.example.FructFactory.BombFactory;
 import com.example.FructFactory.FructFactory;
@@ -14,7 +13,6 @@ import com.example.FructFactory.GoldAppleFactory;
 import com.example.FructFactory.PepperFactory;
 import com.example.FructFactory.PortalFactory;
 import com.example.FructFactory.ShieldFactory;
-import com.example.ObserverPanes.FieldGrid;
 import com.example.ObserverPanes.Observer;
 import com.example.effects.Effect;
 import com.example.effects.GameOverEffect;
@@ -62,9 +60,6 @@ public class Model {
         }
     }
 
-    //FieldGrid grid;
-    Game game;
-
     public void addToSnakePlan(Coordinates c){
         snake.addToPlan(c);
     }
@@ -77,17 +72,6 @@ public class Model {
         return freeCells.contains(cord);
     }
 
-    /*
-    public void registerGridPane(FieldGrid grid){
-        this.grid = grid;
-    }
-
-    */
-    public void registerGame(Game game){
-        this.game = game;
-    }
-    // */
-
     public void increaseSnake(){
         var newTail = snake.increaseSnake();
         field[newTail.r][newTail.c] = false;
@@ -97,14 +81,12 @@ public class Model {
     public void increaseSpeed(){
         modelUpdate.delay-=30;
         modelUpdate.changeSpeed = true;
-        //game.increaseSpeed(modelUpdate.delay);
     }
 
     public void checkGameOver(){
         if(modelUpdate.isProtected){
             modelUpdate.isProtected = false;
             modelUpdate.changeProtected = true;
-            //grid.update(snake.toArrayList(), modelUpdate.isProtected);
         } else {
             modelUpdate.isGameOver = true; 
         }
@@ -113,7 +95,6 @@ public class Model {
     public void setShield() throws FileNotFoundException{
         modelUpdate.isProtected = true;
         modelUpdate.changeProtected = true;
-        //grid.update(snake.toArrayList(), modelUpdate.isProtected);
     }
 
     public void increaseScore(int i){
@@ -140,16 +121,11 @@ public class Model {
         if(freeCells.size() == 0) return null;
         Random rnd = new Random();
 
-
         int rndCell; Coordinates freeCell;
         
-        //do{
-            rndCell = rnd.nextInt(freeCells.size());
-            freeCell = freeCells.get(rndCell);
-            
-        //}while(field[freeCell.r][freeCell.c] != null);
+        rndCell = rnd.nextInt(freeCells.size());
+        freeCell = freeCells.get(rndCell);
         
-
         return freeCell;
     }
 
@@ -188,8 +164,6 @@ public class Model {
         field[modelUpdate.snakeUpdate.deadTail.r][modelUpdate.snakeUpdate.deadTail.c] = null;
         
         Boolean fieldState = field[modelUpdate.snakeUpdate.newHead.r][modelUpdate.snakeUpdate.newHead.c];
-
-        //System.out.println(fieldState);
 
         if(fieldState == null) {
             field[modelUpdate.snakeUpdate.newHead.r][modelUpdate.snakeUpdate.newHead.c] = false;
@@ -262,7 +236,6 @@ public class Model {
         updateSnake();
 
         notifyObservers();
-        //grid.update(modelUpdate);
     }
 
     public ModelInfo getInfo(){

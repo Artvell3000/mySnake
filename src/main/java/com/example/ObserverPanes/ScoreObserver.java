@@ -1,7 +1,6 @@
 package com.example.ObserverPanes;
 
 import com.example.model.Model;
-import com.example.model.ModelUpdate;
 
 import javafx.scene.control.Label;
 
@@ -17,7 +16,6 @@ public class ScoreObserver implements Observer{
 
     @Override
     public void update() {
-        ModelUpdate u = model.getUpdateModelInfo();
         label.setText(model.getScoreString());
     }
     
