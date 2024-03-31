@@ -24,7 +24,7 @@ public class FieldGrid extends GridPane{
     Pane[][] fieldPanes;
 
     FieldGrid(Model model, String s1, String s2){
-        model.registerGridPane(this);
+        //model.registerGridPane(this);
         this.height = model.height;
         this.width = model.width;
         this.style1 = s1;

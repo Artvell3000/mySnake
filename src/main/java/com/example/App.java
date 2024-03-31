@@ -11,6 +11,10 @@ import javafx.stage.Stage;
 import java.io.FileNotFoundException;
 
 import com.example.ObserverPanes.FieldGrid;
+import com.example.ObserverPanes.GameObserver;
+import com.example.ObserverPanes.GameOverObserver;
+import com.example.ObserverPanes.GridObserver;
+import com.example.ObserverPanes.ScoreObserver;
 import com.example.model.DrivingDirections.Direction;
 
 public class App extends Application {
@@ -52,6 +56,11 @@ public class App extends Application {
         Label lGameOver = getLabelForGameOver();
         
         FieldGrid grid = new FieldGrid(game.model);
+
+        GameObserver gameObserver = new GameObserver(game.model, game);
+        ScoreObserver scoreObserver = new ScoreObserver(game.model, lScore);
+        GameOverObserver gameOverObserver = new GameOverObserver(game.model, lGameOver);
+        GridObserver gridObserver = new GridObserver(game.model, grid);
         //System.out.println(game.model.height + "height");
 
         VBox vbox = new VBox();

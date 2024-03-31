@@ -24,8 +24,6 @@ import com.example.model.DrivingDirections.Direction;
 public class Model {
     public final int height;
     public final int width;
-    //private int score = 0;
-    //private double delay = 150;
 
     Boolean[][] field;
     SnakeDeque snake;
@@ -64,7 +62,7 @@ public class Model {
         }
     }
 
-    FieldGrid grid;
+    //FieldGrid grid;
     Game game;
 
     public void addToSnakePlan(Coordinates c){
@@ -79,13 +77,16 @@ public class Model {
         return freeCells.contains(cord);
     }
 
+    /*
     public void registerGridPane(FieldGrid grid){
         this.grid = grid;
     }
 
+    */
     public void registerGame(Game game){
         this.game = game;
     }
+    // */
 
     public void increaseSnake(){
         var newTail = snake.increaseSnake();
@@ -95,14 +96,15 @@ public class Model {
 
     public void increaseSpeed(){
         modelUpdate.delay-=30;
-        game.increaseSpeed(modelUpdate.delay);
+        modelUpdate.changeSpeed = true;
+        //game.increaseSpeed(modelUpdate.delay);
     }
 
     public void checkGameOver(){
         if(modelUpdate.isProtected){
             modelUpdate.isProtected = false;
             modelUpdate.changeProtected = true;
-            grid.update(snake.toArrayList(), modelUpdate.isProtected);
+            //grid.update(snake.toArrayList(), modelUpdate.isProtected);
         } else {
             modelUpdate.isGameOver = true; 
         }
@@ -111,7 +113,7 @@ public class Model {
     public void setShield() throws FileNotFoundException{
         modelUpdate.isProtected = true;
         modelUpdate.changeProtected = true;
-        grid.update(snake.toArrayList(), modelUpdate.isProtected);
+        //grid.update(snake.toArrayList(), modelUpdate.isProtected);
     }
 
     public void increaseScore(int i){
@@ -239,6 +241,10 @@ public class Model {
 
     //get && set
 
+    public ArrayList<Coordinates> getSnake(){
+        return snake.toArrayList();
+    }
+
     public int getCountOfFreeCells(){
         return freeCells.size();
     }
@@ -250,9 +256,13 @@ public class Model {
 
         modelUpdate.newFructs.clear();
         modelUpdate.deadFructs.clear();
+        modelUpdate.changeProtected = false;
+        modelUpdate.changeSpeed = false;
 
         updateSnake();
-        grid.update(modelUpdate);
+
+        notifyObservers();
+        //grid.update(modelUpdate);
     }
 
     public ModelInfo getInfo(){

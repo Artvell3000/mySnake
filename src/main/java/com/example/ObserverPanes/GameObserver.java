@@ -2,23 +2,24 @@ package com.example.ObserverPanes;
 
 import java.io.FileNotFoundException;
 
+import com.example.Game;
 import com.example.model.Model;
 import com.example.model.ModelUpdate;
 
-public class GridObserver implements Observer{
-    FieldGrid grid;
+public class GameObserver implements Observer{
     Model model;
+    Game game;
 
-    public GridObserver(Model model, FieldGrid grid){
+    public GameObserver(Model model, Game game){
         this.model = model;
-        this.grid = grid;
+        this.game = game;
         model.registerObservers(this);
     }
 
     @Override
     public void update() throws FileNotFoundException {
         ModelUpdate u = model.getUpdateModelInfo();
-        grid.update(u);
-        if(u.changeProtected) grid.update(model.getSnake(), u.isProtected);
+        if(u.changeSpeed)game.increaseSpeed(u.delay);
     }
+    
 }

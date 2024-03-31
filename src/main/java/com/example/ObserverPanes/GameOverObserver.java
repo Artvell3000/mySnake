@@ -5,20 +5,24 @@ import java.io.FileNotFoundException;
 import com.example.model.Model;
 import com.example.model.ModelUpdate;
 
-public class GridObserver implements Observer{
-    FieldGrid grid;
-    Model model;
+import javafx.scene.control.Label;
 
-    public GridObserver(Model model, FieldGrid grid){
+public class GameOverObserver implements Observer{
+    Model model;
+    Label label;
+
+    public GameOverObserver(Model model, Label lGameOver){
         this.model = model;
-        this.grid = grid;
+        this.label = lGameOver;
         model.registerObservers(this);
     }
 
     @Override
     public void update() throws FileNotFoundException {
         ModelUpdate u = model.getUpdateModelInfo();
-        grid.update(u);
-        if(u.changeProtected) grid.update(model.getSnake(), u.isProtected);
+        if(u.isGameOver){
+            label.setVisible(true);
+        }
     }
+    
 }
