@@ -24,8 +24,8 @@ import com.example.model.DrivingDirections.Direction;
 public class Model {
     public final int height;
     public final int width;
-    private int score = 0;
-    private double delay = 150;
+    //private int score = 0;
+    //private double delay = 150;
 
     Boolean[][] field;
     SnakeDeque snake;
@@ -94,8 +94,8 @@ public class Model {
     }
 
     public void increaseSpeed(){
-        delay-=30;
-        game.increaseSpeed(delay);
+        modelUpdate.delay-=30;
+        game.increaseSpeed(modelUpdate.delay);
     }
 
     public void checkGameOver(){
@@ -115,11 +115,11 @@ public class Model {
     }
 
     public void increaseScore(int i){
-        score+=i;
+        modelUpdate.score+=i;
     }
 
     public void reduceScore(int i){
-        score-=i;
+        modelUpdate.score-=i;
     }
 
     public void deleteEatenObject(){
@@ -237,8 +237,6 @@ public class Model {
         generateFructs();
     }
 
-    
-
     //get && set
 
     public int getCountOfFreeCells(){
@@ -255,7 +253,6 @@ public class Model {
 
         updateSnake();
         grid.update(modelUpdate);
-
     }
 
     public ModelInfo getInfo(){
@@ -321,11 +318,11 @@ public class Model {
     }
 
     public String getScoreString() {
-        return String.valueOf(score);
+        return String.valueOf(modelUpdate.score);
     }
 
     public int getScore(){
-        return score;
+        return modelUpdate.score;
     }
     
 }

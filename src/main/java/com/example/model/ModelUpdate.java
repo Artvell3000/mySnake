@@ -12,4 +12,7 @@ public class ModelUpdate {
 
     public boolean isProtected = false;
     public boolean isGameOver = false;
+
+    public int score = 0;
+    public int delay = 160;
 }
