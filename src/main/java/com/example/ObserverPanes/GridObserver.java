@@ -3,7 +3,6 @@ package com.example.ObserverPanes;
 import java.io.FileNotFoundException;
 
 import com.example.model.Model;
-import com.example.model.ModelUpdate;
 
 public class GridObserver implements Observer{
     FieldGrid grid;

@@ -14,6 +14,7 @@ import com.example.model.Coordinates;
 import com.example.model.Model;
 
 public class NoPattern {
+    @SuppressWarnings("exports")
     public void generateFruct(Model model, FructFactory f) throws FileNotFoundException{
 
         boolean checkTheConditions = true;
@@ -31,8 +32,9 @@ public class NoPattern {
             checkTheConditions =  (model.getScore() > 0 && ch < 21 && model.getCountOfFreeCells() > 20);
         }
 
-        Fruct newFruct;
+        if(!checkTheConditions) return;
 
+        Fruct newFruct;
         if(f instanceof PortalFactory){
             Coordinates cell1 = model.getRandomFreeCell();
             Fruct newFruct1 = f.getFruct(cell1.r, cell1.c, model);

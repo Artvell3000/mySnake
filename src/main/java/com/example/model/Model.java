@@ -253,7 +253,7 @@ public class Model {
         modelUpdate.newFructs.clear();
         modelUpdate.deadFructs.clear();
 
-        SnakeUpdate snakeUpdate = updateSnake();
+        updateSnake();
         grid.update(modelUpdate);
 
     }

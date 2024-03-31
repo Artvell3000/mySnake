@@ -1,7 +1,6 @@
 package com.example.ObserverPanes;
 
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import com.example.Resources;
@@ -10,7 +9,6 @@ import com.example.model.Coordinates;
 import com.example.model.Model;
 import com.example.model.ModelInfo;
 import com.example.model.ModelUpdate;
-import com.example.model.SnakeDeque;
 import com.example.myPanes.SnakePane;
 
 import javafx.scene.image.ImageView;
@@ -18,7 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class FieldGrid extends GridPane{
-    private Model model;
+    //private Model model;
     final int height;
     final int width;
     final String style1;
