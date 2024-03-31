@@ -260,6 +260,11 @@ public class Model {
     }
 
     public void setDirection(Direction d){
+        if((snake.direction == Direction.DOWN && d == Direction.UP) || 
+        (snake.direction == Direction.UP && d == Direction.DOWN) || 
+        (snake.direction == Direction.LEFT && d == Direction.RIGHT) || 
+        (snake.direction == Direction.RIGHT && d == Direction.LEFT)
+        ) return;
         snake.setDirection(d);
     }
 
