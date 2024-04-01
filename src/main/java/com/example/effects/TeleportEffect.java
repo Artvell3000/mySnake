@@ -3,7 +3,6 @@ package com.example.effects;
 import java.io.FileNotFoundException;
 
 import com.example.fructs.Portal;
-import com.example.model.Coordinates;
 import com.example.model.Model;
 
 public class TeleportEffect extends Effect{

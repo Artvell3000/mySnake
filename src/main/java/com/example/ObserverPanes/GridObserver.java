@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import com.example.model.Model;
 import com.example.model.ModelUpdate;
+import com.example.myPanes.FieldGrid;
 
 public class GridObserver implements Observer{
     FieldGrid grid;

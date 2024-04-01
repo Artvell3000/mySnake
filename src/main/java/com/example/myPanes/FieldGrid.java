@@ -1,4 +1,4 @@
-package com.example.ObserverPanes;
+package com.example.myPanes;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,7 +9,6 @@ import com.example.model.Coordinates;
 import com.example.model.Model;
 import com.example.model.ModelInfo;
 import com.example.model.ModelUpdate;
-import com.example.myPanes.SnakePane;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
