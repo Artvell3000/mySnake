@@ -51,6 +51,10 @@ public class Model {
         observers.add(b);
     }
 
+    public void registerAllObservers(Observer... b){
+        observers.addAll(new ArrayList<Observer>(Arrays.asList(b)));
+    }
+
     public boolean deleteObservers(Observer b){
         return observers.remove(b);
     }
