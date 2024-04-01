@@ -123,12 +123,11 @@ public class App extends Application {
                     }
                     break;
                 case "O":
+                    game.changeState();
                     if(isPaused){
-                        game.timeline.stop();
                         lPause.setVisible(true);
                     }
                     else {
-                        game.timeline.play();
                         lPause.setVisible(false);
                     }
                     isPaused = !isPaused;
