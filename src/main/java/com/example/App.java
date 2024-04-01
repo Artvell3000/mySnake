@@ -22,6 +22,17 @@ public class App extends Application {
     final double delay = 150;
     boolean isPaused = true;
 
+    GameObserver gameObserver;
+    ScoreObserver scoreObserver;
+    GameOverObserver gameOverObserver;
+    GridObserver gridObserver;
+
+    Label lScore = getLabelForScore();
+    Label lPause = getLabelForPause();
+    Label lGameOver = getLabelForGameOver();
+    FieldGrid grid;
+    VBox vbox = new VBox();
+
     Game game;
     
     private static Scene scene;
@@ -46,23 +57,36 @@ public class App extends Application {
         return gameOverLabel;
     }
 
+    private void restartGame() throws FileNotFoundException{
+        game.model.deleteAllObservers();
+        game = new Game();
+
+        vbox.getChildren().remove(grid);
+        
+        grid = new FieldGrid(game.model);
+
+        vbox.getChildren().add(grid);
+
+        gameObserver = new GameObserver(game.model, game);
+        scoreObserver = new ScoreObserver(game.model, lScore);
+        gameOverObserver = new GameOverObserver(game.model, lGameOver);
+        gridObserver = new GridObserver(game.model, grid);
+
+        grid.redraw(game.model.getInfo());
+        lGameOver.setVisible(false);
+    }
+
     @Override
     public void start(@SuppressWarnings("exports") Stage stage) throws FileNotFoundException{
 
         game = new Game();
+        grid = new FieldGrid(game.model);
 
-        Label lScore = getLabelForScore();
-        Label lPause = getLabelForPause();
-        Label lGameOver = getLabelForGameOver();
-        
-        FieldGrid grid = new FieldGrid(game.model);
+        gameObserver = new GameObserver(game.model, game);
+        scoreObserver = new ScoreObserver(game.model, lScore);
+        gameOverObserver = new GameOverObserver(game.model, lGameOver);
+        gridObserver = new GridObserver(game.model, grid);
 
-        GameObserver gameObserver = new GameObserver(game.model, game);
-        ScoreObserver scoreObserver = new ScoreObserver(game.model, lScore);
-        GameOverObserver gameOverObserver = new GameOverObserver(game.model, lGameOver);
-        GridObserver gridObserver = new GridObserver(game.model, grid);
-
-        VBox vbox = new VBox();
         vbox.getChildren().add(lScore);
         vbox.getChildren().add(grid);
 
@@ -91,6 +115,13 @@ public class App extends Application {
                 case "W":
                     game.model.setDirection(Direction.LEFT);
                     break;
+                case "R":
+                    try {
+                        this.restartGame();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 case "O":
                     if(isPaused){
                         game.timeline.stop();
@@ -101,9 +132,6 @@ public class App extends Application {
                         lPause.setVisible(false);
                     }
                     isPaused = !isPaused;
-                    break;
-                case "T":
-                    game.timeline.setRate(2.0);
                     break;
             }
         });

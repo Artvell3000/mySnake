@@ -43,5 +43,4 @@ public class Game {
     public void increaseSpeed(){
         tik = 0;
     }
-
 }

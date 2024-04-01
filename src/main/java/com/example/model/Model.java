@@ -59,6 +59,10 @@ public class Model {
         return observers.remove(b);
     }
 
+    public void deleteAllObservers(){
+        observers.clear();
+    }
+
     public void notifyObservers() throws FileNotFoundException{
         for(Observer i:observers){
             i.update();
