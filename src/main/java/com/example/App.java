@@ -61,7 +61,6 @@ public class App extends Application {
         ScoreObserver scoreObserver = new ScoreObserver(game.model, lScore);
         GameOverObserver gameOverObserver = new GameOverObserver(game.model, lGameOver);
         GridObserver gridObserver = new GridObserver(game.model, grid);
-        //System.out.println(game.model.height + "height");
 
         VBox vbox = new VBox();
         vbox.getChildren().add(lScore);

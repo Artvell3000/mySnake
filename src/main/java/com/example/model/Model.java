@@ -23,6 +23,8 @@ public class Model {
     public final int height;
     public final int width;
 
+    private int updateTik = 10;
+
     Boolean[][] field;
     SnakeDeque snake;
     ModelUpdate modelUpdate = new ModelUpdate();
@@ -54,7 +56,6 @@ public class Model {
     }
 
     public void notifyObservers() throws FileNotFoundException{
-
         for(Observer i:observers){
             i.update();
         }
@@ -62,6 +63,10 @@ public class Model {
 
     public void addToSnakePlan(Coordinates c){
         snake.addToPlan(c);
+    }
+
+    public boolean isUpdateTik(int tik){
+        return tik%updateTik == 0;
     }
 
     public boolean isFilled(){
@@ -79,8 +84,10 @@ public class Model {
     }
 
     public void increaseSpeed(){
-        modelUpdate.delay-=30;
-        modelUpdate.changeSpeed = true;
+        if(updateTik!=1){
+            updateTik--;
+            modelUpdate.changeSpeed = true;
+        }
     }
 
     public void checkGameOver(){

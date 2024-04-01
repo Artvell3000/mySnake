@@ -19,7 +19,7 @@ public class GameObserver implements Observer{
     @Override
     public void update() throws FileNotFoundException {
         ModelUpdate u = model.getUpdateModelInfo();
-        if(u.changeSpeed)game.increaseSpeed(u.delay);
+        if(u.changeSpeed)game.increaseSpeed();
     }
     
 }

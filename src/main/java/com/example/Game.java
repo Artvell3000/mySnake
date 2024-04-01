@@ -13,10 +13,12 @@ public class Game {
     boolean isPaused = false;
     Model model;
     Timeline timeline = new Timeline();
-    double delay = 150;
+    int tik = 0;
+    final double delay = 10;
     KeyFrame keyFrame = new KeyFrame(Duration.millis(delay), e -> {
                 try {
-                    model.goToNextState();
+                    if(model.isUpdateTik(tik))model.goToNextState();
+                    tik++;
                 } catch (FileNotFoundException e1) {
                     e1.printStackTrace();
                 }
@@ -24,9 +26,6 @@ public class Game {
     
     Game() throws FileNotFoundException{
         model = new Model(height, width);
-
-        model.registerGame(this);
-
         timeline.getKeyFrames().add(keyFrame);
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -41,23 +40,8 @@ public class Game {
         isPaused = !isPaused;
     } 
 
-    public void increaseSpeed(double d){
-        delay = d;
-        //System.out.println("timeline start");
-        timeline.stop();
-        timeline = new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), e -> {
-            try {
-                model.goToNextState();
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
-            }
-        }));
-
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-        
-        //System.out.println("timeline end");
+    public void increaseSpeed(){
+        tik = 0;
     }
 
 }
