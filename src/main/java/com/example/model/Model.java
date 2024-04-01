@@ -1,6 +1,7 @@
 package com.example.model;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class Model {
     public final int height;
     public final int width;
 
-    private int updateTik = 10;
+    private int updateTik = 13;
 
     Boolean[][] field;
     SnakeDeque snake;
@@ -327,5 +328,9 @@ public class Model {
     public int getScore(){
         return modelUpdate.score;
     }
-    
+
+    @Override
+    protected void finalize() {
+        System.out.println("delete Model");
+    }
 }
